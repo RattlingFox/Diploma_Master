@@ -13,13 +13,13 @@ namespace Diploma_Master.Research
         /// Расчёт по формуле для критерия К2
         /// Суммирование произведения компоненты матрицы использования файла на компоненту матрицы расстояний между узлами
         /// Результат есть сумма для всех файлов, распределённых в хранилище
-        /// На вход запрашиваются инициализированные объекты storage (хранилище) и solution (решение)
+        /// На вход запрашиваются инициализированные объекты "Хранилище" и "Решение"
         /// На выходе дробное значение критерия К2
         /// </summary>
-        /// <param name="storage"> Инициализированный обект storage (хранилище) </param>
-        /// <param name="solution"> Инициализированый объект solution (решение) </param>
+        /// <param name="storage"> Инициализированный обект "Хранилище" </param>
+        /// <param name="solution"> Инициализированый объект "Решение" </param>
         /// <returns></returns>
-        public static float CriterionTwoCalc(InitObject storage, SolutionObject solution)
+        public static float CriterionTwoCalc(StorageObject storage, SolutionObject solution)
         {
             float result = 0;
 

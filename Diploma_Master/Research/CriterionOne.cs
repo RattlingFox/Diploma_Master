@@ -10,12 +10,15 @@ namespace Diploma_Master.Research
     internal static class CriterionOne
     {
         /// <summary>
-        /// 
+        /// Расчёт критерия К1 по формуле (2.2). Суммирование для каждого узла хранилища разности объёма узла и двойной суммы
+        /// произведения компонент матрицы объёмов фрагментов файлов на компоненты матрицы хранения фрагментов файлов, хранимых на узле.
+        /// На вход запрашиваются инициализированные объекты "Хранилище" и "Решение"
+        /// На выходе дробное значение критерия К1
         /// </summary>
-        /// <param name="storage"> Инициализированный обект storage (хранилище) </param>
-        /// <param name="solution"> Инициализированый объект solution (решение) </param>
+        /// <param name="storage"> Инициализированный обект "Хранилище" </param>
+        /// <param name="solution"> Инициализированый объект "Решение" </param>
         /// <returns></returns>
-        public static float CriterionOneCalc(InitObject storage, SolutionObject solution)
+        public static float CriterionOneCalc(StorageObject storage, SolutionObject solution)
         {
             float result = 0;
 

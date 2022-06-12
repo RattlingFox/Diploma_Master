@@ -9,7 +9,16 @@ namespace Diploma_Master.Research
 {
     internal static class ConstraintsCheck
     {
-        public static Boolean CheckSolution(InitObject storage, SolutionObject solution)
+        /// <summary>
+        /// Проверка решения на соответствие ограничению: суммарный объём фрагментов файлов, распределённвх на узел,
+        /// не превышает объём узла хранилища.
+        /// На вход запрашиваются инициализированные объекты "Хранилище" и "Решение"
+        /// На выходе boolean ответ о соответствии решения ограничению.
+        /// </summary>
+        /// <param name="storage"> Заполненный экземпляр "Хранилище" </param>
+        /// <param name="solution"> Заполненный экземпляр "Решение" </param>
+        /// <returns></returns>
+        public static Boolean CheckSolution(StorageObject storage, SolutionObject solution)
         {
             var answer = false;
 

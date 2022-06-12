@@ -10,7 +10,14 @@ namespace Diploma_Master
 {
     public class GA
     {
-        public static List<SolutionObject> GAStep(InitObject storage, List<SolutionObject> solutionOld, int gens)
+        /// <summary>
+        /// Реализация генетического алгоритма.
+        /// </summary>
+        /// <param name="storage"> Экземпляр "Хранилище", для которого выполняется алгоритм </param>
+        /// <param name="solutionOld"> Поколение "родителей" </param>
+        /// <param name="gens"> Количество генов во фрагменте хромосомы </param>
+        /// <returns></returns>
+        public static List<SolutionObject> GAStep(StorageObject storage, List<SolutionObject> solutionOld, int gens)
         {
             var solutionNew = new List<SolutionObject>();
 

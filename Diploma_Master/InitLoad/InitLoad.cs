@@ -10,30 +10,37 @@ namespace Diploma_Master
     {
         private static readonly Random rnd = new();
 
-        // Инициализация экземпляра storage (хранилище)
-        // На выходе получим экземпляр storage (хранилище),
-        // для которого заполнены параметры: номер, количество узлов, объёмы узлов,
-        // объём всего хранилища, количество файлов для распределения в хранилище
-        public static InitObject InitStorage()                          
+        /// <summary>
+        /// Инициализация экземпляра "Хранилище".
+        /// На выходе получим экземпляр "Хранилище", для которого заполнены параметры: 
+        /// номер, количество узлов, объёмы узлов, объём всего хранилища, количество файлов для распределения в хранилище
+        /// </summary>
+        /// <returns></returns>
+        public static StorageObject InitStorage()                          
         {
-            var storage = new InitObject
+            var storage = new StorageObject
             {
-                StorageNumber = new SerializableAttribute(),            // Присваиваем номер экземпляру, как элемент последовательности
+                // Присваиваем номер экземпляру, как элемент последовательности
+                StorageNumber = new SerializableAttribute(),
 
-                HiveCount = rnd.Next(100, 500)                          // Задаём количество узлов в хранилище
-            };                                                          // Создаём пустой экземляр класса storage (хранилище)
+                // Задаём количество узлов в хранилище
+                HiveCount = rnd.Next(100, 500)                          
+            };                                                          
 
-            int sizeAll = 0;                                            // Создаём переменную для объёма хранилища
+            int sizeAll = 0;
 
             for (int j = 0; j <= storage.HiveCount; j++)
             {
-                storage.HivesSize[j] = rnd.Next(20, 100 * (10^6));      // Генерируем объём текущего узла
-                sizeAll += storage.HivesSize[j];                               // Суммируем объёмы узлов
+                // Генерируем объём текущего узла в Мб
+                storage.HivesSize[j] = rnd.Next(20, 100 * (10^6));
+                // Суммируем объёмы узлов
+                sizeAll += storage.HivesSize[j];                        
             }
 
-            storage.StorageSize = sizeAll;                              // Заполняем параметр объём хранилища
+            storage.StorageSize = sizeAll;
 
-            storage.FileCount = rnd.Next(1000, 10000);                  // Заполняем параметр количество файлов, распределяемых по узлам
+            // Заполняем параметр количество файлов, распределяемых по узлам
+            storage.FileCount = rnd.Next(1000, 10000);                  
 
             for (int i = 0; i <= storage.HiveCount; i++)
             {
@@ -45,8 +52,9 @@ namespace Diploma_Master
                     }
                     else
                     {
-                        storage.DistanceMatrix[i, g] = 
-                            rnd.Next(0, 10)/10;                         // Генерируем матрицу расстояний между узлами
+                        // Генерируем матрицу расстояний между узлами
+                        // Возможные значения от 0.1 до 1.0 без указания размерности
+                        storage.DistanceMatrix[i, g] = rnd.Next(0, 10)/10;                         
                     }
                 }
             }
@@ -54,44 +62,58 @@ namespace Diploma_Master
             return storage;
         }
 
-        // Инициализация файлов в объекте storage (хранилище)
-        // На вход запрашиваем инициализированный экземпляр storage (хранилище) и количество фрагментов,
-        // на которое делим каждый файл
-        // На выходе получим дополненный экземпляр storage (хранилище) с заполненным списком файлов,
-        // размеры файлов, размеры фрагментов файлов
-        public static InitObject InitFiles(InitObject storage, 
+        /// <summary>
+        /// Инициализация файлов в объекте "Хранилище".
+        /// На вход запрашиваем инициализированный экземпляр "Хранилище" и количество фрагментов, на которое делим каждый файл.
+        /// На выходе получим дополненный экземпляр "Хранилище" с заполненным списком файлов, размеры файлов, размеры фрагментов файлов
+        /// </summary>
+        /// <param name="storage"> Инициализированное пустое хранилище </param>
+        /// <param name="gens"> Количество фрагментов, на которое делим каждый файл </param>
+        /// <returns></returns>
+        public static StorageObject InitFiles(StorageObject storage, 
             int gens)                                                  
         {
-            var fileList = new List<Files>();                           // Создаём пустой список объектов файл
+            // Создаём пустой список объектов файл
+            var fileList = new List<Files>();                           
 
             for (int h = 0; h <= storage.FileCount; h++)
             {
-                var fileSize = rnd.Next(1 * (10 ^ 2), 2 * (10 ^ 9));    // Генерируем размер h-ого файла
-                int fragmentSize = fileSize / gens;                     // Генерируем размер фрагментов h-ого файла
-                var fileFragmentsSize = new int[gens];                  // Создаём пустой массив фрагментов h-ого файла
+                // Генерируем размер h-ого файла
+                var fileSize = rnd.Next(1 * (10 ^ 2), 2 * (10 ^ 9));
+                // Генерируем размер фрагментов h-ого файла
+                int fragmentSize = fileSize / gens;
+                // Создаём пустой массив фрагментов h-ого файла
+                var fileFragmentsSize = new int[gens];                  
                 for (int j = 0; j < gens; j++)
                 {
-                    fileFragmentsSize[j] = fragmentSize;                // Генерируем массив размеров фрагментов h-ого файла
+                    // Генерируем массив размеров фрагментов h-ого файла
+                    fileFragmentsSize[j] = fragmentSize;                
                 }
 
+                // Заполняем список файлов в переменной
                 fileList.Add(new Files
                 {
                     fileNumber = h,
                     fileSize = fileSize,
                     fileFragmentsSize = fileFragmentsSize
-                });                                                     // Заполняем список файлов в переменной
+                });
 
-                storage.Files = fileList.ToList();                      // Заполняем список файлов в объекте storage (хранилище)
+                // Заполняем список файлов в объекте хранилище
+                storage.Files = fileList.ToList();                      
             }
 
                 return storage;
         }
 
-        // Иницилизация матрицы использования файлов узлами хранилища
-        // На вход запрашиваем инициализированный экземпляр storage (хранилище)
-        // На выходе получим дополненный экземпляр storage (хранилище) с заполненной матрицей использования файлов
-        // Марица заполняется случайным образом с вероятностью 0,12 на использование и 0,88 на неиспользование
-        public static InitObject InitUsingMatrix(InitObject storage)         
+        /// <summary>
+        /// Иницилизация матрицы использования файлов узлами хранилища.
+        /// На вход запрашиваем инициализированный экземпляр "Хранилища".
+        /// На выходе получим дополненный экземпляр "Хранилище" с заполненной матрицей использования файлов.
+        /// Матрица заполняется случайным образом с вероятностью 0,12 на использование и 0,88 на неиспользование
+        /// </summary>
+        /// <param name="storage"> Инициализированное хранилище с файлами </param>
+        /// <returns></returns>
+        public static StorageObject InitUsingMatrix(StorageObject storage)         
         {
             for (int i = 0; i <= storage.FileCount; i++)
             {
