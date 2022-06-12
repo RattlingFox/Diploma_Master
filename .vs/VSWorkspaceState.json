@@ -2,13 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\Diploma_Master",
-    "\\Diploma_Master\\bin",
-    "\\Diploma_Master\\bin\\Debug",
-    "\\Diploma_Master\\bin\\Debug\\net5.0",
-    "\\Diploma_Master\\obj",
-    "\\Diploma_Master\\obj\\Debug",
-    "\\Diploma_Master\\Research"
+    "\\Diploma_Master\\InitLoad",
+    "\\Diploma_Master\\Objects",
+    "\\Diploma_Master\\Research",
+    "\\Diploma_Master\\System"
   ],
-  "SelectedNode": "\\Diploma_Master\\Research\\CriterionTwo.cs",
+  "SelectedNode": "\\Diploma_Master\\Research\\ConstraintsCheck.cs",
   "PreviewInSolutionExplorer": false
 }

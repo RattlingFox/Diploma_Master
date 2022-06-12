@@ -17,7 +17,7 @@ namespace Diploma_Master
         {
             var result = new SolutionObject()
             {
-                FileStorageMatrix = new int[storage.FileCount, gens],
+                FileStorageMatrix = new int[storage.HiveCount,storage.FileCount, gens],
                 DistributedFiles = new List<int>()
             };
 
@@ -27,13 +27,19 @@ namespace Diploma_Master
             {
                 for (int j = 0; j <= gens; j++)
                 {
-                    result.FileStorageMatrix[i, j] = rnd.Next(0, storage.FileCount);
+                    int temp = rnd.Next(0, storage.HiveCount);
+                    result.FileStorageMatrix[temp, i, j] = 1;
 
                     // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
                     // файл исключается из хранилища и текущей популяции
-                    if (result.FileStorageMatrix[i, j] == 0 && result.DistributedFiles.Contains(i))
+                    var check = true;
+                    if (result.FileStorageMatrix[temp, i, j] == 0)
                     {
-                        result.DistributedFiles[result.DistributedFiles.Count] = i;
+                        check = false;
+                    }
+                    if (check == true && j == gens)
+                    {
+                        result.DistributedFiles.Add(i);
                     }
                 }
             }

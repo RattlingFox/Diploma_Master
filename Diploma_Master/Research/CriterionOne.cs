@@ -26,9 +26,9 @@ namespace Diploma_Master.Research
                 {
                     if (solution.DistributedFiles.Contains(j.fileNumber))
                     {
-                        foreach (int i in j.fileFragmentsSize)
+                        for (int i = 0; i <= j.fileFragmentsSize.Length; i++)
                         {
-                            filesSize += i * solution.FileStorageMatrix[h, j.fileNumber];
+                            filesSize += i * solution.FileStorageMatrix[h, j.fileNumber,i];
                         }
                     }                    
                 }

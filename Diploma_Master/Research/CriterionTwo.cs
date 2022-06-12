@@ -34,7 +34,7 @@ namespace Diploma_Master.Research
                         {
                             for (int i = 0; i <= file.fileFragmentsSize.Length; i++)
                             {
-                                if (q == solution.FileStorageMatrix[file.fileNumber, i])
+                                if (1 == solution.FileStorageMatrix[q,file.fileNumber, i])
                                 {
                                     unit += storage.FilesUsingMatrix[file.fileNumber, j] * storage.DistanceMatrix[q, j];
                                 }
