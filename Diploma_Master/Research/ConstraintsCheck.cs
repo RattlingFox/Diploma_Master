@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Diploma_Master.Research
+namespace Diploma_Master
 {
     internal static class ConstraintsCheck
     {
@@ -18,7 +18,7 @@ namespace Diploma_Master.Research
         /// <param name="storage"> Заполненный экземпляр "Хранилище" </param>
         /// <param name="solution"> Заполненный экземпляр "Решение" </param>
         /// <returns></returns>
-        public static Boolean CheckSolution(StorageObject storage, SolutionObject solution)
+        public static bool CheckSolution(StorageObject storage, SolutionObject solution)
         {
             var answer = false;
 

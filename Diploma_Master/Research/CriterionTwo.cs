@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Diploma_Master.Research
+namespace Diploma_Master
 {
     internal static class CriterionTwo
     {
         /// <summary>
-        /// Расчёт по формуле для критерия К2
+        /// Расчёт по формуле (2.3) для критерия К2
         /// Суммирование произведения компоненты матрицы использования файла на компоненту матрицы расстояний между узлами
         /// Результат есть сумма для всех файлов, распределённых в хранилище
         /// На вход запрашиваются инициализированные объекты "Хранилище" и "Решение"

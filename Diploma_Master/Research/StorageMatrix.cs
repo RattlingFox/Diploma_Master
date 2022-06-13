@@ -19,7 +19,7 @@ namespace Diploma_Master
         /// <returns></returns>
         public static SolutionObject InitStorageMatrix(StorageObject storage, int gens)
         {
-            var result = new SolutionObject()
+            var solution = new SolutionObject()
             {
                 FileStorageMatrix = new int[storage.HiveCount,storage.FileCount, gens],
                 DistributedFiles = new List<int>()
@@ -32,18 +32,18 @@ namespace Diploma_Master
                 for (int j = 0; j <= gens; j++)
                 {
                     int temp = rnd.Next(0, storage.HiveCount);
-                    result.FileStorageMatrix[temp, i, j] = 1;
+                    solution.FileStorageMatrix[temp, i, j] = 1;
 
                     // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
                     // файл исключается из хранилища и текущей популяции
                     var check = true;
-                    if (result.FileStorageMatrix[temp, i, j] == 0)
+                    if (solution.FileStorageMatrix[temp, i, j] == 0)
                     {
                         check = false;
                     }
                     if (check == true && j == gens)
                     {
-                        result.DistributedFiles.Add(i);
+                        solution.DistributedFiles.Add(i);
                     }
                 }
             }
@@ -53,15 +53,62 @@ namespace Diploma_Master
             {
                 for (int num = 0; num <= j.fileNumber; num++)
                 {
-                    if (result.DistributedFiles.Contains(num))
+                    if (solution.DistributedFiles.Contains(num))
                     {
-                        result.FileSizeSum += j.fileSize;
+                        solution.FileSizeSum += j.fileSize;
                     };
                 }
             }
 
-            return result;
+            return solution;
+        }
+        /// <summary>
+        /// Метод для пересчёта параметров нового решения. Пересчитывает список полностью распределённых файлов по узлам и их общий объём.
+        /// На вход метод запрашивает экземпляр "Хранилища", количество частеЙ, на который делиться каждый файл и экземпляр "решения" для пересчёта
+        /// с новой матрицей хранения.
+        /// На выходе метод отдаёт экземпляр "Решения" с новыми значениями параметров.
+        /// </summary>
+        /// <param name="storage"> Экземпляр "Хранилище" </param>
+        /// <param name="gens"> Количество частей, на которые делится каждый файл </param>
+        /// <returns></returns>
+        public static SolutionObject RecalcSolution(StorageObject storage, int gens, SolutionObject solution)
+        {
+            solution.DistributedFiles.Clear();
 
+            for (int q = 0; q <= storage.HiveCount; q++)
+            {
+                for (int i = 0; i <= storage.FileCount; i++)
+                {
+                    for (int j = 0; j <= gens; j++)
+                    {
+                        // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
+                        // файл исключается из хранилища и текущей популяции
+                        var check = true;
+                        if (solution.FileStorageMatrix[q, i, j] == 0)
+                        {
+                            check = false;
+                        }
+                        if (check == true && j == gens)
+                        {
+                            solution.DistributedFiles.Add(i);
+                        }
+                    }
+                }
+            }
+
+            // Перебор файлов в хранилище для подсчёта суммарного объёма
+            foreach (Files j in storage.Files)
+            {
+                for (int num = 0; num <= j.fileNumber; num++)
+                {
+                    if (solution.DistributedFiles.Contains(num))
+                    {
+                        solution.FileSizeSum += j.fileSize;
+                    };
+                }
+            }
+
+            return solution;
         }
     }
 }

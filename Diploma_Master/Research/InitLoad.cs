@@ -16,7 +16,7 @@ namespace Diploma_Master
         /// номер, количество узлов, объёмы узлов, объём всего хранилища, количество файлов для распределения в хранилище
         /// </summary>
         /// <returns></returns>
-        public static StorageObject InitStorage()                          
+        public static StorageObject InitStorage()
         {
             var storage = new StorageObject
             {
@@ -24,23 +24,23 @@ namespace Diploma_Master
                 StorageNumber = new SerializableAttribute(),
 
                 // Задаём количество узлов в хранилище
-                HiveCount = rnd.Next(100, 500)                          
-            };                                                          
+                HiveCount = rnd.Next(100, 500)
+            };
 
             int sizeAll = 0;
 
             for (int j = 0; j <= storage.HiveCount; j++)
             {
                 // Генерируем объём текущего узла в Мб
-                storage.HivesSize[j] = rnd.Next(20, 100 * (10^6));
+                storage.HivesSize[j] = rnd.Next(20, 100 * (10 ^ 6));
                 // Суммируем объёмы узлов
-                sizeAll += storage.HivesSize[j];                        
+                sizeAll += storage.HivesSize[j];
             }
 
             storage.StorageSize = sizeAll;
 
-            // Заполняем параметр количество файлов, распределяемых по узлам
-            storage.FileCount = rnd.Next(1000, 10000);                  
+            // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
+            storage.FileCount = rnd.Next(5000, 5000) * 2;
 
             for (int i = 0; i <= storage.HiveCount; i++)
             {
@@ -54,7 +54,7 @@ namespace Diploma_Master
                     {
                         // Генерируем матрицу расстояний между узлами
                         // Возможные значения от 0.1 до 1.0 без указания размерности
-                        storage.DistanceMatrix[i, g] = rnd.Next(0, 10)/10;                         
+                        storage.DistanceMatrix[i, g] = rnd.Next(0, 10) / 10;
                     }
                 }
             }
@@ -70,11 +70,11 @@ namespace Diploma_Master
         /// <param name="storage"> Инициализированное пустое хранилище </param>
         /// <param name="gens"> Количество фрагментов, на которое делим каждый файл </param>
         /// <returns></returns>
-        public static StorageObject InitFiles(StorageObject storage, 
-            int gens)                                                  
+        public static StorageObject InitFiles(StorageObject storage,
+            int gens)
         {
             // Создаём пустой список объектов файл
-            var fileList = new List<Files>();                           
+            var fileList = new List<Files>();
 
             for (int h = 0; h <= storage.FileCount; h++)
             {
@@ -83,11 +83,11 @@ namespace Diploma_Master
                 // Генерируем размер фрагментов h-ого файла
                 int fragmentSize = fileSize / gens;
                 // Создаём пустой массив фрагментов h-ого файла
-                var fileFragmentsSize = new int[gens];                  
+                var fileFragmentsSize = new int[gens];
                 for (int j = 0; j < gens; j++)
                 {
                     // Генерируем массив размеров фрагментов h-ого файла
-                    fileFragmentsSize[j] = fragmentSize;                
+                    fileFragmentsSize[j] = fragmentSize;
                 }
 
                 // Заполняем список файлов в переменной
@@ -99,10 +99,10 @@ namespace Diploma_Master
                 });
 
                 // Заполняем список файлов в объекте хранилище
-                storage.Files = fileList.ToList();                      
+                storage.Files = fileList.ToList();
             }
 
-                return storage;
+            return storage;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Diploma_Master
         /// </summary>
         /// <param name="storage"> Инициализированное хранилище с файлами </param>
         /// <returns></returns>
-        public static StorageObject InitUsingMatrix(StorageObject storage)         
+        public static StorageObject InitUsingMatrix(StorageObject storage)
         {
             for (int i = 0; i <= storage.FileCount; i++)
             {
@@ -127,7 +127,7 @@ namespace Diploma_Master
                     else
                     {
                         storage.FilesUsingMatrix[i, j] = 0;
-                    }                    
+                    }
                 }
             }
 
