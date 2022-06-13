@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Diploma_Master
+namespace Diploma_Master.Methods
 {
     internal static class StorageMatrix
     {

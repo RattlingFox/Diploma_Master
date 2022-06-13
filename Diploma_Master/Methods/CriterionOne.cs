@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Diploma_Master
+namespace Diploma_Master.Methods
 {
     internal static class CriterionOne
     {

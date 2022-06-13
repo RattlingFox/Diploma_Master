@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using Diploma_Master.Objects;
 
-namespace Diploma_Master
+namespace Diploma_Master.Methods
 {
     public class GA
     {
