@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Diploma_Master.Methods;
+using System.Diagnostics;
 
 namespace Diploma_Master.System
 {
@@ -35,11 +36,11 @@ namespace Diploma_Master.System
         public static void StoragePrint()
         {
             Console.WriteLine("Текущее хранилище:");
-            Console.WriteLine("Хранилище #", storage.StorageNumber);
-            Console.WriteLine("Количество узлов = ", storage.HiveCount);
-            Console.WriteLine("Общий размер хранилища = ", storage.StorageSize);
-            Console.WriteLine("Количество файлов для распределения = ", storage.FileCount);
-            Console.WriteLine("Количество частей каждого файла = ", gens);
+            Console.WriteLine($"Хранилище #{storage.StorageNumber}");
+            Console.WriteLine($"Количество узлов = {storage.HiveCount}");
+            Console.WriteLine($"Общий размер хранилища = {storage.StorageSize}");
+            Console.WriteLine($"Количество файлов для распределения = {storage.FileCount}");
+            Console.WriteLine($"Количество частей каждого файла = {gens}");
         }
 
         /// <summary>
@@ -66,11 +67,12 @@ namespace Diploma_Master.System
             }
             var allocatedFilesCount = storage.FileCount - bestGeneration.Solution.DistributedFiles.Count;
             var unusedSpace = storage.StorageSize - bestGeneration.Solution.FileSizeSum;
+            var ObjectiveFUnctionValue = bestGeneration.ObjectiveFunctionValue;
 
             Console.WriteLine("Параметры наилучшего решения:");
-            Console.WriteLine("Количество нераспределённых файлов = ", allocatedFilesCount);
-            Console.WriteLine("Объём неиспользованного пространства в хранилище = ", unusedSpace, "Mb");
-            Console.WriteLine("Значение целевой функции = ", bestGeneration.ObjectiveFunctionValue);
+            Console.WriteLine($"Количество нераспределённых файлов = {allocatedFilesCount}");
+            Console.WriteLine($"Объём неиспользованного пространства в хранилище = {unusedSpace} Mb");
+            Console.WriteLine($"Значение целевой функции = {ObjectiveFUnctionValue}");
         }
 
         /// <summary>
@@ -79,12 +81,15 @@ namespace Diploma_Master.System
         /// </summary>
         public static void GARealization()
         {
-            if (childPopulation != null)
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            if (childPopulation.Count != 0)
             {
                 parentPopulation = childPopulation;
             }
 
-            for (; epochCounter < 1000; epochCounter++)
+            for (; epochCounter < 10; epochCounter++)
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -98,13 +103,19 @@ namespace Diploma_Master.System
 
             if (epochCounter == 1000)
             {
-                Console.WriteLine("Достигнута ", epochCounter, "-ая эпоха");
+                Console.WriteLine($"Достигнута {epochCounter}-ая эпоха");
             }
 
             else
             {
-                Console.WriteLine("Достигнута сходимость за ", epochCounter, " эпох");
-            }            
+                Console.WriteLine($"Достигнута сходимость за {epochCounter} эпох");
+            }
+
+            stopwatch.Stop();
+            TimeSpan ts = stopwatch.Elapsed;
+            Console.WriteLine();
+            Console.WriteLine($"Время работы алгоритма {ts}");
+
         }
 
     }

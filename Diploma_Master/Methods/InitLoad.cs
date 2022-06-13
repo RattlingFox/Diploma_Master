@@ -122,7 +122,7 @@ namespace Diploma_Master.Methods
             {
                 for (int j = 0; j < storage.HiveCount; j++)
                 {
-                    int g = rnd.Next(0, 100);
+                    /*int g = rnd.Next(0, 100);
                     if (g <= 5 || g >= 95)
                     {
                         storage.FilesUsingMatrix[i, j] = 1;
@@ -130,7 +130,9 @@ namespace Diploma_Master.Methods
                     else
                     {
                         storage.FilesUsingMatrix[i, j] = 0;
-                    }
+                    }*/
+                    int g = rnd.Next(0, 1);
+                    storage.FilesUsingMatrix[i, j] = g;
                 }
             }
 

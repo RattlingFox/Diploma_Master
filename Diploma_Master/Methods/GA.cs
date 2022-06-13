@@ -29,6 +29,7 @@ namespace Diploma_Master.Methods
             var tempPopulation = new List<PopulationObject>();
             int[,,] tempStorageMatrix = new int[storage.HiveCount, storage.FileCount, gens];
             int iter = 0;
+            var alpha = new List<int[,,]>();
 
 
             tempPopulation.AddRange(populationOld.OrderBy(x => x.ObjectiveFunctionValue).Take(10));
@@ -37,17 +38,19 @@ namespace Diploma_Master.Methods
             {
                 foreach (PopulationObject j in tempPopulation)
                 {
+                    var beta = new int[storage.HiveCount, storage.FileCount, gens];
+
                     if (i != j)
                     {
-                        for (int g = storage.FileCount/2; g <= storage.FileCount; g++)
+                        for (int g = 0; g < storage.FileCount; g++)
                         {
                             if (g < storage.FileCount / 2)
                             {
                                 for (int h = 0; h < storage.HiveCount; h++)
                                 {
-                                    for (int p = 0; h <= gens; h++)
+                                    for (int p = 0; h < gens; h++)
                                     {
-                                        populationNew[iter].Solution.FileStorageMatrix[h, g, p] = i.Solution.FileStorageMatrix[h, g, p];
+                                        beta[h, g, p] = i.Solution.FileStorageMatrix[h, g, p];
                                     }
                                 }
                             }
@@ -56,17 +59,23 @@ namespace Diploma_Master.Methods
                             {
                                 for (int h = 0; h < storage.HiveCount; h++)
                                 {
-                                    for (int p = 0; h <= gens; h++)
+                                    for (int p = 0; h < gens; h++)
                                     {
-                                        populationNew[iter].Solution.FileStorageMatrix[h, g, p] = j.Solution.FileStorageMatrix[h, g, p];
+                                        beta[h, g, p] = j.Solution.FileStorageMatrix[h, g, p];
                                     }
                                 }
                             }
                         }
-                    }                   
+                    }
 
-                    iter++;
+                    alpha.Add(beta);
                 }
+            }
+
+            foreach (PopulationObject i in populationNew)
+            {
+                i.Solution.FileStorageMatrix = alpha[iter];
+                iter++;
             }
 
             foreach (PopulationObject i in populationNew)

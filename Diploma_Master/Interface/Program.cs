@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Diploma_Master.System
@@ -7,6 +8,7 @@ namespace Diploma_Master.System
     {
         static void Main()
         {
+            Stopwatch stopwatch = new Stopwatch();
 
             Console.WriteLine("Для запуска программы нажмите любую клавишу");
             Console.ReadLine();
@@ -26,12 +28,14 @@ namespace Diploma_Master.System
             Console.WriteLine("Решение инициализировано");
             Console.WriteLine();
             UI.BestObjectiveFunctionValues();
+            Thread.Sleep(5000);
+            Console.Clear();
             Console.WriteLine();
 
             Console.WriteLine("Реализация генетического алгоритма");
             Console.WriteLine();
             UI.GARealization();
-            Console.Clear();
+            Console.WriteLine();
 
             UI.StoragePrint();
             Console.WriteLine();
