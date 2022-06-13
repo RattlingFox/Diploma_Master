@@ -22,7 +22,7 @@ namespace Diploma_Master.Methods
         {
             float result = 0;
 
-            for(int h = 0; h <= storage.HiveCount; h++)
+            for(int h = 0; h < storage.HiveCount; h++)
             {
                 int filesSize = 0;
                 foreach (Files j in storage.Files)

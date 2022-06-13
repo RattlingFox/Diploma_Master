@@ -18,7 +18,12 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static float CriterionThreeCalc(SolutionObject solution)
         {
-            float result = 1 / solution.DistributedFiles.Count;
+            float result = 1;
+
+            if (solution.DistributedFiles.Count != 0)
+            {
+                result = 1 / solution.DistributedFiles.Count;
+            }
 
             return result;
         }

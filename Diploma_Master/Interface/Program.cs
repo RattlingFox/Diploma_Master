@@ -15,6 +15,7 @@ namespace Diploma_Master.System
             Console.WriteLine("Запуск инициализации хранилища");
             UI.StorageInitialization(6);
             Console.WriteLine("Хранилище инициализировано");
+            UI.StoragePrint();
             Thread.Sleep(5000);
             Console.Clear();
 

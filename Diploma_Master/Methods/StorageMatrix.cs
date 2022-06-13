@@ -19,17 +19,17 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static SolutionObject InitStorageMatrix(StorageObject storage, int gens)
         {
+            Random rnd = new();
+
             var solution = new SolutionObject()
             {
-                FileStorageMatrix = new int[storage.HiveCount,storage.FileCount, gens],
+                FileStorageMatrix = new int[storage.HiveCount, storage.FileCount, gens],
                 DistributedFiles = new List<int>()
             };
 
-            Random rnd = new();
-
-            for (int i = 0; i <= storage.FileCount; i++)
+            for (int i = 0; i < storage.FileCount; i++)
             {
-                for (int j = 0; j <= gens; j++)
+                for (int j = 0; j < gens; j++)
                 {
                     int temp = rnd.Next(0, storage.HiveCount);
                     solution.FileStorageMatrix[temp, i, j] = 1;
@@ -51,7 +51,7 @@ namespace Diploma_Master.Methods
             // Перебор файлов в хранилище для подсчёта суммарного объёма
             foreach (Files j in storage.Files)
             {
-                for (int num = 0; num <= j.fileNumber; num++)
+                for (int num = 0; num < j.fileNumber; num++)
                 {
                     if (solution.DistributedFiles.Contains(num))
                     {
@@ -75,9 +75,9 @@ namespace Diploma_Master.Methods
         {
             solution.DistributedFiles.Clear();
 
-            for (int q = 0; q <= storage.HiveCount; q++)
+            for (int q = 0; q < storage.HiveCount; q++)
             {
-                for (int i = 0; i <= storage.FileCount; i++)
+                for (int i = 0; i < storage.FileCount; i++)
                 {
                     for (int j = 0; j <= gens; j++)
                     {
@@ -99,7 +99,7 @@ namespace Diploma_Master.Methods
             // Перебор файлов в хранилище для подсчёта суммарного объёма
             foreach (Files j in storage.Files)
             {
-                for (int num = 0; num <= j.fileNumber; num++)
+                for (int num = 0; num < j.fileNumber; num++)
                 {
                     if (solution.DistributedFiles.Contains(num))
                     {

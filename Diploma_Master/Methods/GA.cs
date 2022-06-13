@@ -43,7 +43,7 @@ namespace Diploma_Master.Methods
                         {
                             if (g < storage.FileCount / 2)
                             {
-                                for (int h = 0; h <= storage.HiveCount; h++)
+                                for (int h = 0; h < storage.HiveCount; h++)
                                 {
                                     for (int p = 0; h <= gens; h++)
                                     {
@@ -54,7 +54,7 @@ namespace Diploma_Master.Methods
 
                             else
                             {
-                                for (int h = 0; h <= storage.HiveCount; h++)
+                                for (int h = 0; h < storage.HiveCount; h++)
                                 {
                                     for (int p = 0; h <= gens; h++)
                                     {
@@ -157,11 +157,11 @@ namespace Diploma_Master.Methods
         {
             var result = new List<int[]>();
 
-            for (int j = 0; j <= storage.FileCount; j++)
+            for (int j = 0; j < storage.FileCount; j++)
             {
                 int[] temp = new int[gens];
 
-                for (int q = 0; q <= storage.HiveCount; q++)
+                for (int q = 0; q < storage.HiveCount; q++)
                 {
                     for (int i = 0; i <= gens; i++)
                     {

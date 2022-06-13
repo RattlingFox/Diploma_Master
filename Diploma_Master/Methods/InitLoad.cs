@@ -29,10 +29,11 @@ namespace Diploma_Master.Methods
 
             int sizeAll = 0;
 
-            for (int j = 0; j <= storage.HiveCount; j++)
+            storage.HivesSize = new int[storage.HiveCount];
+            for (int j = 0; j < storage.HiveCount; j++)
             {
                 // Генерируем объём текущего узла в Мб
-                storage.HivesSize[j] = rnd.Next(20, 100 * (10 ^ 6));
+                storage.HivesSize[j] = rnd.Next(20, 2097152);
                 // Суммируем объёмы узлов
                 sizeAll += storage.HivesSize[j];
             }
@@ -40,11 +41,12 @@ namespace Diploma_Master.Methods
             storage.StorageSize = sizeAll;
 
             // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
-            storage.FileCount = rnd.Next(5000, 5000) * 2;
+            storage.FileCount = rnd.Next(250, 5000) * 2;
 
-            for (int i = 0; i <= storage.HiveCount; i++)
+            storage.DistanceMatrix = new float[storage.HiveCount, storage.HiveCount];
+            for (int i = 0; i < storage.HiveCount; i++)
             {
-                for (int g = 0; g <= storage.HiveCount; g++)
+                for (int g = 0; g < storage.HiveCount; g++)
                 {
                     if (i == g)
                     {
@@ -79,7 +81,7 @@ namespace Diploma_Master.Methods
             for (int h = 0; h <= storage.FileCount; h++)
             {
                 // Генерируем размер h-ого файла
-                var fileSize = rnd.Next(1 * (10 ^ 2), 2 * (10 ^ 9));
+                var fileSize = rnd.Next(100, 2048);
                 // Генерируем размер фрагментов h-ого файла
                 int fragmentSize = fileSize / gens;
                 // Создаём пустой массив фрагментов h-ого файла
@@ -115,9 +117,10 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static StorageObject InitUsingMatrix(StorageObject storage)
         {
-            for (int i = 0; i <= storage.FileCount; i++)
+            storage.FilesUsingMatrix = new int[storage.FileCount, storage.HiveCount];
+            for (int i = 0; i < storage.FileCount; i++)
             {
-                for (int j = 0; j <= storage.HiveCount; j++)
+                for (int j = 0; j < storage.HiveCount; j++)
                 {
                     int g = rnd.Next(0, 100);
                     if (g <= 5 || g >= 95)
