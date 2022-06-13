@@ -12,7 +12,7 @@ namespace Diploma_Master
     /// </summary>
     public class StorageObject
     {
-        public SerializableAttribute StorageNumber { get; set; }
+        public int StorageNumber { get; set; }
 
         public int HiveCount { get; set; }
 

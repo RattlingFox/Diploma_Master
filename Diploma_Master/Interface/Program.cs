@@ -30,7 +30,7 @@ namespace Diploma_Master.System
 
             Console.WriteLine("Реализация генетического алгоритма");
             Console.WriteLine();
-            ;
+            UI.GARealization();
             Console.Clear();
 
             UI.StoragePrint();

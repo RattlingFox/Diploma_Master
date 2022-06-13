@@ -56,7 +56,7 @@ namespace Diploma_Master.System
         /// </summary>
         public static void BestObjectiveFunctionValues()
         {
-            if (childPopulation == null)
+            if (childPopulation.Count == 0)
             {
                 bestGeneration = parentPopulation.OrderBy(x => x.ObjectiveFunctionValue).Where(y => y.ConstraintCheckResult == true).First();
             }

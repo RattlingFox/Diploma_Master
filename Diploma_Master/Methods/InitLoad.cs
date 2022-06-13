@@ -21,7 +21,7 @@ namespace Diploma_Master.Methods
             var storage = new StorageObject
             {
                 // Присваиваем номер экземпляру, как элемент последовательности
-                StorageNumber = new SerializableAttribute(),
+                StorageNumber = 1,
 
                 // Задаём количество узлов в хранилище
                 HiveCount = rnd.Next(100, 500)
