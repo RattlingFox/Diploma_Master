@@ -24,7 +24,7 @@ namespace Diploma_Master.Methods
                 StorageNumber = 1,
 
                 // Задаём количество узлов в хранилище
-                HiveCount = rnd.Next(10, 50)
+                HiveCount = rnd.Next(20, 100)
             };
 
             int sizeAll = 0;
@@ -41,7 +41,7 @@ namespace Diploma_Master.Methods
             storage.StorageSize = sizeAll;
 
             // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
-            storage.FileCount = rnd.Next(1, 5) * 6;
+            storage.FileCount = rnd.Next(25, 30)*2;
 
             storage.DistanceMatrix = new float[storage.HiveCount, storage.HiveCount];
             for (int i = 0; i < storage.HiveCount; i++)

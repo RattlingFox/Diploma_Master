@@ -16,19 +16,17 @@ namespace Diploma_Master.System
             
             Console.WriteLine("Запуск инициализации хранилища");
             UI.StorageInitialization(6);
+            Console.WriteLine();
             Console.WriteLine("Хранилище инициализировано");
             UI.StoragePrint();
-            Thread.Sleep(5000);
-            Console.Clear();
-
-            UI.StoragePrint();
             Console.WriteLine();
+
             Console.WriteLine("Инициализация начального решения");
             UI.PopulationInitialization();
+            Console.WriteLine();
             Console.WriteLine("Решение инициализировано");
             Console.WriteLine();
             UI.BestObjectiveFunctionValues();
-            Thread.Sleep(5000);
             Console.WriteLine();
 
             Console.WriteLine("Реализация генетического алгоритма");

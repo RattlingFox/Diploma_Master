@@ -18,6 +18,7 @@ namespace Diploma_Master.Methods
         /// </summary>
         /// <param name="storage"> Инициализированный обект "Хранилище" </param>
         /// <param name="solution"> Инициализированый объект "Решение" </param>
+        /// <param name="gens"> Количество фрагментов каждого файла </param>
         /// <returns></returns>
         public static float CriterionTwoCalc(StorageObject storage, SolutionObject solution, int gens)
         {

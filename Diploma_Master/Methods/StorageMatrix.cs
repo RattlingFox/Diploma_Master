@@ -123,9 +123,36 @@ namespace Diploma_Master.Methods
             return solution;
         }
 
+        /// <summary>
+        /// Метод для получения матрицы хранения вида int[q,j,i] для расчёта критериев К1 и К2.
+        /// На вход метод запрашивает экземпляр текущего "Хранилища", экземпляр текущего "Решения" и количество фрагментов каждого файла.
+        /// </summary>
+        /// <param name="storage"> Экземпляр "Хранилище" </param>
+        /// <param name="solution"> Экземпляр "Решение" </param>
+        /// <param name="gens"> Количество фрагментов каждого файла </param>
+        /// <returns></returns>
         public static int[,,] StorageMatrixToArray(StorageObject storage, SolutionObject solution, int gens)
         {
             var result = new int[storage.HiveCount, storage.FileCount, gens];
+            int iter = 0;
+            
+            foreach (var j in solution.FileStorageMatrix)
+            {
+                for (int q = 0; q < storage.HiveCount; q++)
+                {
+                    for (int i = 0; i < j.Length; i++)
+                    {
+                        if (j[i] == q)
+                        {
+                            result[q, iter, i] = 1;
+                        }
+                        else
+                        {
+                            result[q, iter, i] = 0;
+                        }
+                    }
+                }
+            }
 
             return result;
         }
