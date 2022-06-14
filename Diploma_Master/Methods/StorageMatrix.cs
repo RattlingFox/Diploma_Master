@@ -20,6 +20,7 @@ namespace Diploma_Master.Methods
         public static SolutionObject InitStorageMatrix(StorageObject storage, int gens)
         {
             Random rnd = new();
+            int[] checkSize = new int[storage.HiveCount];
 
             var solution = new SolutionObject()
             {
@@ -34,6 +35,13 @@ namespace Diploma_Master.Methods
                 for (int j = 0; j < gens; j++)
                 {
                     alpha[j] = rnd.Next(0, storage.HiveCount);
+                    checkSize[alpha[j]] += 1;
+
+                    if (checkSize[alpha[j]] == 5)
+                    {
+                        alpha[j] = 0;
+                        j--;
+                    }
                 }
                 solution.FileStorageMatrix.Add(alpha);
             }

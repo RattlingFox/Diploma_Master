@@ -42,7 +42,7 @@ namespace Diploma_Master.Methods
 
             // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
             //storage.FileCount = rnd.Next(25, 30)*2;
-            storage.FileCount = 150;
+            storage.FileCount = 100;
 
             storage.DistanceMatrix = new float[storage.HiveCount, storage.HiveCount];
             for (int i = 0; i < storage.HiveCount; i++)

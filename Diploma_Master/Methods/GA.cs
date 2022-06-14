@@ -91,7 +91,7 @@ namespace Diploma_Master.Methods
                 i.IndividualNumber = iterThree++;
                 i.ObjectiveFunctionValue = CriterionOne.CriterionOneCalc(storage, i.Solution, gens) + CriterionTwo.CriterionTwoCalc(storage, i.Solution, gens) +
                     CriterionThree.CriterionThreeCalc(i.Solution);
-                i.ConstraintCheckResult = ConstraintsCheck.CheckSolution(storage, i.Solution);
+                i.ConstraintCheckResult = ConstraintsCheck.CheckSolution(storage, i.Solution, gens);
 
                 if (i.ConstraintCheckResult == false)
                 {
@@ -117,7 +117,7 @@ namespace Diploma_Master.Methods
             for (int i = 0; i < 10;)
             {
                 var solution = StorageMatrix.InitStorageMatrix(storage, gens);
-                var check = ConstraintsCheck.CheckSolution(storage, solution);
+                var check = ConstraintsCheck.CheckSolution(storage, solution, gens);
                 if (check == true)
                 {
                     float result = CriterionOne.CriterionOneCalc(storage, solution, gens) +
