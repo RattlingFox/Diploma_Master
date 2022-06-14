@@ -127,15 +127,15 @@ namespace Diploma_Master.Methods
         {
             var population = new List<PopulationObject>();
 
-            for (int i = 0; i < 50;)
+            for (int i = 0; i < 10;)
             {
                 var solution = StorageMatrix.InitStorageMatrix(storage, gens);
                 var check = ConstraintsCheck.CheckSolution(storage, solution);
                 if (check == true)
                 {
-                    float result = CriterionOne.CriterionOneCalc(storage, solution) + 
+                    float result = CriterionOne.CriterionOneCalc(storage, solution) +
                         CriterionTwo.CriterionTwoCalc(storage, solution) + CriterionThree.CriterionThreeCalc(solution);
-                    
+
                     population.Add(new PopulationObject
                     {
                         GenerationNumber = 0,

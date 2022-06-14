@@ -24,26 +24,36 @@ namespace Diploma_Master.Methods
             var solution = new SolutionObject()
             {
                 FileStorageMatrix = new int[storage.HiveCount, storage.FileCount, gens],
-                DistributedFiles = new List<int>()
+                DistributedFiles = new List<int>(),
+                FileSizeSum = 0
             };
 
-            for (int i = 0; i < storage.FileCount; i++)
+            for (int i = 0; i < storage.FileCount; i++) 
             {
                 for (int j = 0; j < gens; j++)
                 {
                     int temp = rnd.Next(0, storage.HiveCount);
                     solution.FileStorageMatrix[temp, i, j] = 1;
+                }
+            }
 
-                    // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
-                    // файл исключается из хранилища и текущей популяции
-                    var check = true;
-                    if (solution.FileStorageMatrix[temp, i, j] == 0)
+            for (int q = 0; q < storage.HiveCount; q++) 
+            {
+                for (int i = 0; i < storage.FileCount; i++)
+                {
+                    for (int j = 0; j < gens; j++)
                     {
-                        check = false;
-                    }
-                    if (check == true && j == gens)
-                    {
-                        solution.DistributedFiles.Add(i);
+                        // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
+                        // файл исключается из хранилища и текущей популяции
+                        var check = true;
+                        if (solution.FileStorageMatrix[q, i, j] == 0)
+                        {
+                            check = false;
+                        }
+                        if (check == true && j == gens-1)
+                        {
+                            solution.DistributedFiles.Add(i);
+                        }
                     }
                 }
             }

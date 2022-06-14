@@ -24,7 +24,7 @@ namespace Diploma_Master.Methods
                 StorageNumber = 1,
 
                 // Задаём количество узлов в хранилище
-                HiveCount = rnd.Next(100, 500)
+                HiveCount = rnd.Next(10, 50)
             };
 
             int sizeAll = 0;
@@ -33,7 +33,7 @@ namespace Diploma_Master.Methods
             for (int j = 0; j < storage.HiveCount; j++)
             {
                 // Генерируем объём текущего узла в Мб
-                storage.HivesSize[j] = rnd.Next(20, 2097152);
+                storage.HivesSize[j] = rnd.Next(4048, 10240);
                 // Суммируем объёмы узлов
                 sizeAll += storage.HivesSize[j];
             }
@@ -41,7 +41,7 @@ namespace Diploma_Master.Methods
             storage.StorageSize = sizeAll;
 
             // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
-            storage.FileCount = rnd.Next(250, 5000) * 2;
+            storage.FileCount = rnd.Next(10, 50) * 2;
 
             storage.DistanceMatrix = new float[storage.HiveCount, storage.HiveCount];
             for (int i = 0; i < storage.HiveCount; i++)
@@ -80,8 +80,8 @@ namespace Diploma_Master.Methods
 
             for (int h = 0; h <= storage.FileCount; h++)
             {
-                // Генерируем размер h-ого файла
-                var fileSize = rnd.Next(100, 2048);
+                // Генерируем размер h-ого файла в Мб
+                var fileSize = rnd.Next(1, 128)*gens;
                 // Генерируем размер фрагментов h-ого файла
                 int fragmentSize = fileSize / gens;
                 // Создаём пустой массив фрагментов h-ого файла
@@ -122,7 +122,7 @@ namespace Diploma_Master.Methods
             {
                 for (int j = 0; j < storage.HiveCount; j++)
                 {
-                    /*int g = rnd.Next(0, 100);
+                    int g = rnd.Next(0, 100);
                     if (g <= 5 || g >= 95)
                     {
                         storage.FilesUsingMatrix[i, j] = 1;
@@ -130,9 +130,7 @@ namespace Diploma_Master.Methods
                     else
                     {
                         storage.FilesUsingMatrix[i, j] = 0;
-                    }*/
-                    int g = rnd.Next(0, 1);
-                    storage.FilesUsingMatrix[i, j] = g;
+                    }
                 }
             }
 

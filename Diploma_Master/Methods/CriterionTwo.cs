@@ -32,7 +32,7 @@ namespace Diploma_Master.Methods
                     {
                         for (int q = 0; q < storage.HiveCount; q++)
                         {
-                            for (int i = 0; i <= file.fileFragmentsSize.Length; i++)
+                            for (int i = 0; i < file.fileFragmentsSize.Length; i++)
                             {
                                 if (1 == solution.FileStorageMatrix[q,file.fileNumber, i])
                                 {
