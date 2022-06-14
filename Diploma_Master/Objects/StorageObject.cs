@@ -10,9 +10,9 @@ namespace Diploma_Master
     {
         public int StorageNumber { get; set; }
 
-        public int HiveCount { get; set; }
+        public int NodeCount { get; set; }
 
-        public int[] HivesSize { get; set; }
+        public int[] NodesSize { get; set; }
 
         public int StorageSize { get; set; }
 

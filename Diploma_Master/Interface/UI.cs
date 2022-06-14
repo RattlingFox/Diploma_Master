@@ -35,7 +35,7 @@ namespace Diploma_Master.System
         {
             Console.WriteLine("Текущее хранилище:");
             Console.WriteLine($"Хранилище #{storage.StorageNumber}");
-            Console.WriteLine($"Количество узлов = {storage.HiveCount}");
+            Console.WriteLine($"Количество узлов = {storage.NodeCount}");
             Console.WriteLine($"Общий объём хранилища = {storage.StorageSize}");
             Console.WriteLine($"Количество файлов для распределения = {storage.FileCount}");
             Console.WriteLine($"Количество частей каждого файла = {gens}");

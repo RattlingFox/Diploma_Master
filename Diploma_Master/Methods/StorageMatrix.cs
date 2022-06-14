@@ -1,6 +1,7 @@
 ﻿using Diploma_Master.Objects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Diploma_Master.Methods
 {
@@ -19,8 +20,8 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static SolutionObject InitStorageMatrix(StorageObject storage, int gens)
         {
-            Random rnd = new();
-            int[] checkSize = new int[storage.HiveCount];
+            var rnd = new Random();
+            int[] checkSize = new int[storage.NodeCount];
 
             var solution = new SolutionObject()
             {
@@ -32,17 +33,20 @@ namespace Diploma_Master.Methods
             for (int i = 0; i < storage.FileCount; i++)
             {
                 var alpha = new int[gens];
+
+                var rndNum = rnd.Next(0, storage.NodeCount);
+
                 for (int j = 0; j < gens; j++)
                 {
-                    alpha[j] = rnd.Next(0, storage.HiveCount);
-                    checkSize[alpha[j]] += 1;
-
-                    if (checkSize[alpha[j]] == 5)
+                    alpha[j] = rnd.Next(0, storage.NodeCount);
+                    
+                    while (solution.FileStorageMatrix.Any(x => x.ToList().Where(y => y == rndNum).Count() >= 5))
                     {
+                        //rndNum = rnd.Next(0, storage.NodeCount);
                         alpha[j] = 0;
-                        j--;
                     }
                 }
+
                 solution.FileStorageMatrix.Add(alpha);
             }
 
@@ -68,15 +72,13 @@ namespace Diploma_Master.Methods
             }
 
             // Перебор файлов в хранилище для подсчёта суммарного объёма
+            int num = 0;
             foreach (Files j in storage.Files)
             {
-                for (int num = 0; num < j.fileNumber; num++)
+                if (solution.DistributedFiles.Contains(num))
                 {
-                    if (solution.DistributedFiles.Contains(num))
-                    {
-                        solution.FileSizeSum += j.fileSize;
-                    };
-                }
+                    solution.FileSizeSum += j.fileFragmentsSize.Sum();
+                };
             }
 
             return solution;
@@ -141,12 +143,12 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static int[,,] StorageMatrixToArray(StorageObject storage, SolutionObject solution, int gens)
         {
-            var result = new int[storage.HiveCount, storage.FileCount, gens];
+            var result = new int[storage.NodeCount, storage.FileCount, gens];
             int iter = 0;
 
             foreach (var j in solution.FileStorageMatrix)
             {
-                for (int q = 0; q < storage.HiveCount; q++)
+                for (int q = 0; q < storage.NodeCount; q++)
                 {
                     for (int i = 0; i < j.Length; i++)
                     {

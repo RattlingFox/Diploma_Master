@@ -22,20 +22,20 @@ namespace Diploma_Master.Methods
                 StorageNumber = 1,
 
                 // Задаём количество узлов в хранилище
-                //HiveCount = rnd.Next(20, 100)
-                HiveCount = 50
+                //NodeCount = rnd.Next(20, 100)
+                NodeCount = 50
             };
 
             int sizeAll = 0;
 
-            storage.HivesSize = new int[storage.HiveCount];
-            for (int j = 0; j < storage.HiveCount; j++)
+            storage.NodesSize = new int[storage.NodeCount];
+            for (int j = 1; j < storage.NodeCount; j++)
             {
                 // Генерируем объём текущего узла в Мб
-                //storage.HivesSize[j] = rnd.Next(4048, 10240);
-                storage.HivesSize[j] = 4048;
+                //storage.NodesSize[j] = rnd.Next(4048, 10240);
+                storage.NodesSize[j] = 4048;
                 // Суммируем объёмы узлов
-                sizeAll += storage.HivesSize[j];
+                sizeAll += storage.NodesSize[j];
             }
 
             storage.StorageSize = sizeAll;
@@ -44,10 +44,10 @@ namespace Diploma_Master.Methods
             //storage.FileCount = rnd.Next(25, 30)*2;
             storage.FileCount = 100;
 
-            storage.DistanceMatrix = new float[storage.HiveCount, storage.HiveCount];
-            for (int i = 0; i < storage.HiveCount; i++)
+            storage.DistanceMatrix = new float[storage.NodeCount, storage.NodeCount];
+            for (int i = 1; i < storage.NodeCount; i++)
             {
-                for (int g = 0; g < storage.HiveCount; g++)
+                for (int g = 1; g < storage.NodeCount; g++)
                 {
                     if (i == g)
                     {
@@ -79,7 +79,7 @@ namespace Diploma_Master.Methods
             // Создаём пустой список объектов файл
             var fileList = new List<Files>();
 
-            for (int h = 0; h <= storage.FileCount; h++)
+            for (int h = 0; h < storage.FileCount; h++)
             {
                 // Генерируем размер h-ого файла в Мб
                 //var fileSize = rnd.Next(1, 128)*gens;
@@ -119,10 +119,10 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static StorageObject InitUsingMatrix(StorageObject storage)
         {
-            storage.FilesUsingMatrix = new int[storage.FileCount, storage.HiveCount];
+            storage.FilesUsingMatrix = new int[storage.FileCount, storage.NodeCount];
             for (int i = 0; i < storage.FileCount; i++)
             {
-                for (int j = 0; j < storage.HiveCount; j++)
+                for (int j = 0; j < storage.NodeCount; j++)
                 {
                     int g = rnd.Next(0, 100);
                     if (g <= 5 || g >= 95)

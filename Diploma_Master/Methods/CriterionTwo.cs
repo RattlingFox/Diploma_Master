@@ -24,9 +24,9 @@ namespace Diploma_Master.Methods
                 if (solution.DistributedFiles.Contains(file.fileNumber))
                 {
                     float unit = 0;
-                    for (int j = 0; j < storage.HiveCount; j++)
+                    for (int j = 0; j < storage.NodeCount; j++)
                     {
-                        for (int q = 0; q < storage.HiveCount; q++)
+                        for (int q = 0; q < storage.NodeCount; q++)
                         {
                             for (int i = 0; i < file.fileFragmentsSize.Length; i++)
                             {

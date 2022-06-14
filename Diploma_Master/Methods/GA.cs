@@ -24,7 +24,7 @@ namespace Diploma_Master.Methods
         {
             var populationNew = new List<PopulationObject>();
             var tempPopulation = new List<PopulationObject>();
-            int[,,] tempStorageMatrix = new int[storage.HiveCount, storage.FileCount, gens];
+            int[,,] tempStorageMatrix = new int[storage.NodeCount, storage.FileCount, gens];
             int iterOne = 0;
             int iterTwo = 0;
             int iterThree = 0;
@@ -74,7 +74,7 @@ namespace Diploma_Master.Methods
                 {
                     if (iter == q1 || iter == q2 || iter == q3)
                     {
-                        int p = rnd.Next(0, storage.HiveCount);
+                        int p = rnd.Next(0, storage.NodeCount);
                         int h = rnd.Next(0, gens);
                         int t = rnd.Next(0, 1);
                         if (t == 0) { t = -1; }

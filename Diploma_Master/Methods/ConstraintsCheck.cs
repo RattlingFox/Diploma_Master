@@ -1,4 +1,5 @@
 ﻿using Diploma_Master.Objects;
+using System.Linq;
 
 namespace Diploma_Master.Methods
 {
@@ -15,42 +16,48 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static bool CheckSolution(StorageObject storage, SolutionObject solution, int gens)
         {
-            var answer = true;
             var alpha = DistributedFilesSize(storage, solution, gens);
 
-            for (int i = 0; i < storage.HiveCount; i++)
+            for (int i = 1; i < storage.NodeCount; i++)
             {
-                if (storage.HivesSize[i] < alpha[i])
+                if (storage.NodesSize[i] < alpha[i])
                 {
-                    answer = false;
+                    return false;
                 }
             }            
 
-            return answer;
+            return true;
         }
 
         public static int[] DistributedFilesSize(StorageObject storage, SolutionObject solution, int gens)
         {
-            var result = new int[storage.HiveCount];
-            int iter = 0;
+            var result = new int[storage.NodeCount];
+            var tempResult = new int[storage.NodeCount];
 
-            foreach (var j in solution.FileStorageMatrix)
+            foreach (var j in solution.DistributedFiles)
             {
                 for (int i = 0; i < gens; i++)
                 {
-                    for (int q = 0; q < storage.HiveCount; q++)
+                    for (int q = 0; q < storage.NodeCount; q++)
                     {
-                        if (j[i] == q)
+                        if (solution.FileStorageMatrix[j][i] == q)
                         {
-                            result[q] += storage.Files[iter].fileSize/gens;
+                            var alpha = storage.Files[j]?.fileFragmentsSize[i];
+                            if (alpha == null)
+                            {
+                                tempResult[q] += 0;
+                            }
+                            else
+                            {
+                                tempResult[q] += (int)alpha;
+                            }
+                            break;
                         }
                     }
                 }
-
-                iter++;
             }
 
-            return result;
+            return tempResult;
         }
     }
 }
