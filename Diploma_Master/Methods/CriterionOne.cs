@@ -1,9 +1,4 @@
 ﻿using Diploma_Master.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Diploma_Master.Methods
 {
@@ -23,7 +18,7 @@ namespace Diploma_Master.Methods
         {
             float result = 0;
 
-            for(int h = 0; h < storage.HiveCount; h++)
+            for (int h = 0; h < storage.HiveCount; h++)
             {
                 int filesSize = 0;
                 foreach (Files j in storage.Files)
@@ -34,7 +29,7 @@ namespace Diploma_Master.Methods
                         {
                             filesSize += i * StorageMatrix.StorageMatrixToArray(storage, solution, gens)[h, j.fileNumber, i];
                         }
-                    }                    
+                    }
                 }
                 result += storage.HivesSize[h] - filesSize;
             }

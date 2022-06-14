@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading;
 
 namespace Diploma_Master.System
 {
@@ -13,7 +12,7 @@ namespace Diploma_Master.System
             Console.WriteLine("Для запуска программы нажмите любую клавишу");
             Console.ReadLine();
             Console.Clear();
-            
+
             Console.WriteLine("Запуск инициализации хранилища");
             UI.StorageInitialization(6);
             Console.WriteLine();

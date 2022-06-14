@@ -1,11 +1,9 @@
-﻿using Diploma_Master.Objects;
+﻿using Diploma_Master.Methods;
+using Diploma_Master.Objects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Diploma_Master.Methods;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Diploma_Master.System
 {

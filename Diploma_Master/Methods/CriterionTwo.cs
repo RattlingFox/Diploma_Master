@@ -1,9 +1,4 @@
 ﻿using Diploma_Master.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Diploma_Master.Methods
 {
@@ -35,7 +30,7 @@ namespace Diploma_Master.Methods
                         {
                             for (int i = 0; i < file.fileFragmentsSize.Length; i++)
                             {
-                                if (1 == StorageMatrix.StorageMatrixToArray(storage, solution, gens)[q,file.fileNumber, i])
+                                if (1 == StorageMatrix.StorageMatrixToArray(storage, solution, gens)[q, file.fileNumber, i])
                                 {
                                     unit += storage.FilesUsingMatrix[file.fileNumber, j] * storage.DistanceMatrix[q, j];
                                 }

@@ -28,7 +28,7 @@ namespace Diploma_Master.Methods
                 FileSizeSum = 0
             };
 
-            for (int i = 0; i < storage.FileCount; i++) 
+            for (int i = 0; i < storage.FileCount; i++)
             {
                 var alpha = new int[gens];
                 for (int j = 0; j < gens; j++)
@@ -135,7 +135,7 @@ namespace Diploma_Master.Methods
         {
             var result = new int[storage.HiveCount, storage.FileCount, gens];
             int iter = 0;
-            
+
             foreach (var j in solution.FileStorageMatrix)
             {
                 for (int q = 0; q < storage.HiveCount; q++)

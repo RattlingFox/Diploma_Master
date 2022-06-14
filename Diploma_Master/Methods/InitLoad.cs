@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Diploma_Master.Methods
 {
@@ -24,7 +22,8 @@ namespace Diploma_Master.Methods
                 StorageNumber = 1,
 
                 // Задаём количество узлов в хранилище
-                HiveCount = rnd.Next(20, 100)
+                //HiveCount = rnd.Next(20, 100)
+                HiveCount = 50
             };
 
             int sizeAll = 0;
@@ -33,7 +32,8 @@ namespace Diploma_Master.Methods
             for (int j = 0; j < storage.HiveCount; j++)
             {
                 // Генерируем объём текущего узла в Мб
-                storage.HivesSize[j] = rnd.Next(4048, 10240);
+                //storage.HivesSize[j] = rnd.Next(4048, 10240);
+                storage.HivesSize[j] = 4048;
                 // Суммируем объёмы узлов
                 sizeAll += storage.HivesSize[j];
             }
@@ -41,7 +41,8 @@ namespace Diploma_Master.Methods
             storage.StorageSize = sizeAll;
 
             // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
-            storage.FileCount = rnd.Next(25, 30)*2;
+            //storage.FileCount = rnd.Next(25, 30)*2;
+            storage.FileCount = 150;
 
             storage.DistanceMatrix = new float[storage.HiveCount, storage.HiveCount];
             for (int i = 0; i < storage.HiveCount; i++)
@@ -81,7 +82,8 @@ namespace Diploma_Master.Methods
             for (int h = 0; h <= storage.FileCount; h++)
             {
                 // Генерируем размер h-ого файла в Мб
-                var fileSize = rnd.Next(1, 128)*gens;
+                //var fileSize = rnd.Next(1, 128)*gens;
+                var fileSize = 256 * gens;
                 // Генерируем размер фрагментов h-ого файла
                 int fragmentSize = fileSize / gens;
                 // Создаём пустой массив фрагментов h-ого файла
