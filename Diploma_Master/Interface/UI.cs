@@ -73,6 +73,19 @@ namespace Diploma_Master.System
             Console.WriteLine($"Количество нераспределённых файлов = {allocatedFilesCount}");
             Console.WriteLine($"Объём неиспользованного пространства в хранилище = {unusedSpace} Mb");
             Console.WriteLine($"Значение целевой функции = {ObjectiveFUnctionValue}");
+            Console.WriteLine("");
+
+            foreach (var i in bestGeneration.Solution.FileStorageMatrix)
+            {
+                Console.WriteLine("");
+                foreach (var q in i)
+                {
+                    Console.Write($"{q}\t");
+                }
+            }
+
+            Console.WriteLine("");
+
         }
 
         /// <summary>

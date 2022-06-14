@@ -18,7 +18,7 @@ namespace Diploma_Master.Methods
         /// <param name="storage"> Инициализированный обект "Хранилище" </param>
         /// <param name="solution"> Инициализированый объект "Решение" </param>
         /// <returns></returns>
-        public static float CriterionOneCalc(StorageObject storage, SolutionObject solution)
+        public static float CriterionOneCalc(StorageObject storage, SolutionObject solution, int gens)
         {
             float result = 0;
 
@@ -31,7 +31,7 @@ namespace Diploma_Master.Methods
                     {
                         for (int i = 0; i < j.fileFragmentsSize.Length; i++)
                         {
-                            filesSize += i * solution.FileStorageMatrix[h, j.fileNumber,i];
+                            filesSize += i * StorageMatrix.StorageMatrixToArray(storage, solution, gens)[h, j.fileNumber, i];
                         }
                     }                    
                 }

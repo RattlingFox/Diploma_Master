@@ -19,7 +19,7 @@ namespace Diploma_Master.Methods
         /// <param name="storage"> Инициализированный обект "Хранилище" </param>
         /// <param name="solution"> Инициализированый объект "Решение" </param>
         /// <returns></returns>
-        public static float CriterionTwoCalc(StorageObject storage, SolutionObject solution)
+        public static float CriterionTwoCalc(StorageObject storage, SolutionObject solution, int gens)
         {
             float result = 0;
 
@@ -34,7 +34,7 @@ namespace Diploma_Master.Methods
                         {
                             for (int i = 0; i < file.fileFragmentsSize.Length; i++)
                             {
-                                if (1 == solution.FileStorageMatrix[q,file.fileNumber, i])
+                                if (1 == StorageMatrix.StorageMatrixToArray(storage, solution, gens)[q,file.fileNumber, i])
                                 {
                                     unit += storage.FilesUsingMatrix[file.fileNumber, j] * storage.DistanceMatrix[q, j];
                                 }

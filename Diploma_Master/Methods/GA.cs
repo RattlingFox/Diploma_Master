@@ -28,8 +28,10 @@ namespace Diploma_Master.Methods
             var populationNew = new List<PopulationObject>();
             var tempPopulation = new List<PopulationObject>();
             int[,,] tempStorageMatrix = new int[storage.HiveCount, storage.FileCount, gens];
-            int iter = 0;
-            var alpha = new List<int[,,]>();
+            int iterOne = 0;
+            int iterTwo = 0;
+            int iterThree = 0;
+            var alpha = new List<List<int[]>>();
 
 
             tempPopulation.AddRange(populationOld.OrderBy(x => x.ObjectiveFunctionValue).Take(10));
@@ -38,32 +40,19 @@ namespace Diploma_Master.Methods
             {
                 foreach (PopulationObject j in tempPopulation)
                 {
-                    var beta = new int[storage.HiveCount, storage.FileCount, gens];
+                    var beta = new List<int[]>();
 
                     if (i != j)
                     {
-                        for (int g = 0; g < storage.FileCount; g++)
+                        foreach (var g in i.Solution.FileStorageMatrix)
                         {
-                            if (g < storage.FileCount / 2)
+                            if (iterOne < storage.FileCount / 2)
                             {
-                                for (int h = 0; h < storage.HiveCount; h++)
-                                {
-                                    for (int p = 0; h < gens; h++)
-                                    {
-                                        beta[h, g, p] = i.Solution.FileStorageMatrix[h, g, p];
-                                    }
-                                }
+                                beta.Add(g);
                             }
-
                             else
                             {
-                                for (int h = 0; h < storage.HiveCount; h++)
-                                {
-                                    for (int p = 0; h < gens; h++)
-                                    {
-                                        beta[h, g, p] = j.Solution.FileStorageMatrix[h, g, p];
-                                    }
-                                }
+                                beta.Add(j.Solution.FileStorageMatrix[iterTwo++]);
                             }
                         }
                     }
@@ -74,35 +63,36 @@ namespace Diploma_Master.Methods
 
             foreach (PopulationObject i in populationNew)
             {
-                i.Solution.FileStorageMatrix = alpha[iter];
-                iter++;
+                i.Solution.FileStorageMatrix = alpha[iterOne++];
             }
 
             foreach (PopulationObject i in populationNew)
             {
-                for (int j = 0; j < 3; j++)
+                int q1 = rnd.Next(0, storage.FileCount);
+                int q2 = rnd.Next(0, storage.FileCount);
+                int q3 = rnd.Next(0, storage.FileCount);
+                int iter = 0;
+
+                foreach (var j in i.Solution.FileStorageMatrix)
                 {
-                    int q = rnd.Next(0, storage.HiveCount);
-                    int p = rnd.Next(0, storage.FileCount);
-                    int h = rnd.Next(0, gens);
+                    if (iter == q1 || iter == q2 || iter == q3)
+                    {
+                        int p = rnd.Next(0, storage.HiveCount);
+                        int h = rnd.Next(0, gens);
+                        int t = rnd.Next(0, 1);
+                        if (t == 0) { t = -1; }
 
-                    int t = rnd.Next(0, 1);
-                    if (t == 0) { t = -1; }
-
-                    i.Solution.FileStorageMatrix[q, p, h] = 0;
-                    i.Solution.FileStorageMatrix[q + t, p, h] = 0;
+                        j[p] += t;
+                    }
+                    iter++;
                 }
-
-                i.Solution = StorageMatrix.RecalcSolution(storage, gens, i.Solution);
             }
 
-            iter = 0;
             foreach (PopulationObject i in populationNew)
             {
                 i.GenerationNumber = populationOld[0].GenerationNumber + 1;
-                i.IndividualNumber = iter;
-                iter++;
-                i.ObjectiveFunctionValue = CriterionOne.CriterionOneCalc(storage, i.Solution) + CriterionTwo.CriterionTwoCalc(storage, i.Solution) +
+                i.IndividualNumber = iterThree++;
+                i.ObjectiveFunctionValue = CriterionOne.CriterionOneCalc(storage, i.Solution, gens) + CriterionTwo.CriterionTwoCalc(storage, i.Solution, gens) +
                     CriterionThree.CriterionThreeCalc(i.Solution);
                 i.ConstraintCheckResult = ConstraintsCheck.CheckSolution(storage, i.Solution);
 
@@ -133,8 +123,8 @@ namespace Diploma_Master.Methods
                 var check = ConstraintsCheck.CheckSolution(storage, solution);
                 if (check == true)
                 {
-                    float result = CriterionOne.CriterionOneCalc(storage, solution) +
-                        CriterionTwo.CriterionTwoCalc(storage, solution) + CriterionThree.CriterionThreeCalc(solution);
+                    float result = CriterionOne.CriterionOneCalc(storage, solution, gens) +
+                        CriterionTwo.CriterionTwoCalc(storage, solution, gens) + CriterionThree.CriterionThreeCalc(solution);
 
                     population.Add(new PopulationObject
                     {
@@ -150,41 +140,6 @@ namespace Diploma_Master.Methods
             }
 
             return population;
-        }
-
-        /// <summary>
-        /// Метод преобразует матрицу хранения в список, где индексом является номер файла, а содержимым одномерные массивы, 
-        /// с индексами соответствующими номерам генов, а содержимым соответствующим номеру узла, на котором распределён фрагмент файла.
-        /// На вход метод запрашивает экземпляр "Хранилища", экземпляр "Решения" и количество генов.
-        /// На выходе метод отдаёт хромосому.
-        /// </summary>
-        /// <param name="storage"> Экземпляр "Хранилище", для которого выполняется алгоритм </param>
-        /// <param name="solution"> Экземпляр "Решения" для преобразования вывода </param>
-        /// <param name="gens"> Количество генов во фрагменте хромосомы </param>
-        /// <returns></returns>
-        public static List<int[]> StorageMatrixToList(StorageObject storage, SolutionObject solution, int gens)
-        {
-            var result = new List<int[]>();
-
-            for (int j = 0; j < storage.FileCount; j++)
-            {
-                int[] temp = new int[gens];
-
-                for (int q = 0; q < storage.HiveCount; q++)
-                {
-                    for (int i = 0; i <= gens; i++)
-                    {
-                        if (solution.FileStorageMatrix[q,j,i] == 1)
-                        {
-                            temp[i] = q;
-                        }
-                    }
-                }
-
-                result.Add(temp);
-            }
-
-            return result;
         }
     }
 }

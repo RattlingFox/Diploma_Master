@@ -23,39 +23,40 @@ namespace Diploma_Master.Methods
 
             var solution = new SolutionObject()
             {
-                FileStorageMatrix = new int[storage.HiveCount, storage.FileCount, gens],
+                FileStorageMatrix = new List<int[]>(),
                 DistributedFiles = new List<int>(),
                 FileSizeSum = 0
             };
 
             for (int i = 0; i < storage.FileCount; i++) 
             {
+                var alpha = new int[gens];
                 for (int j = 0; j < gens; j++)
                 {
-                    int temp = rnd.Next(0, storage.HiveCount);
-                    solution.FileStorageMatrix[temp, i, j] = 1;
+                    alpha[j] = rnd.Next(0, storage.HiveCount);
                 }
+                solution.FileStorageMatrix.Add(alpha);
             }
 
-            for (int q = 0; q < storage.HiveCount; q++) 
+            int iter = 0;
+            foreach (var beta in solution.FileStorageMatrix)
             {
-                for (int i = 0; i < storage.FileCount; i++)
+                for (int j = 0; j < gens; j++)
                 {
-                    for (int j = 0; j < gens; j++)
+                    // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
+                    // файл исключается из хранилища и текущей популяции
+                    var check = true;
+                    if (beta[j] == 0)
                     {
-                        // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
-                        // файл исключается из хранилища и текущей популяции
-                        var check = true;
-                        if (solution.FileStorageMatrix[q, i, j] == 0)
-                        {
-                            check = false;
-                        }
-                        if (check == true && j == gens-1)
-                        {
-                            solution.DistributedFiles.Add(i);
-                        }
+                        check = false;
+                    }
+                    if (check == true && j == gens - 1)
+                    {
+                        solution.DistributedFiles.Add(iter);
                     }
                 }
+
+                iter++;
             }
 
             // Перебор файлов в хранилище для подсчёта суммарного объёма
@@ -72,6 +73,7 @@ namespace Diploma_Master.Methods
 
             return solution;
         }
+
         /// <summary>
         /// Метод для пересчёта параметров нового решения. Пересчитывает список полностью распределённых файлов по узлам и их общий объём.
         /// На вход метод запрашивает экземпляр "Хранилища", количество частеЙ, на который делиться каждый файл и экземпляр "решения" для пересчёта
@@ -85,25 +87,25 @@ namespace Diploma_Master.Methods
         {
             solution.DistributedFiles.Clear();
 
-            for (int q = 0; q < storage.HiveCount; q++)
+            int iter = 0;
+            foreach (var beta in solution.FileStorageMatrix)
             {
-                for (int i = 0; i < storage.FileCount; i++)
+                for (int j = 0; j < gens; j++)
                 {
-                    for (int j = 0; j <= gens; j++)
+                    // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
+                    // файл исключается из хранилища и текущей популяции
+                    var check = true;
+                    if (beta[j] == 0)
                     {
-                        // Проверка на 0 в матрице хранения, в случае нераспределения хотябы одного из фрагментов файла,
-                        // файл исключается из хранилища и текущей популяции
-                        var check = true;
-                        if (solution.FileStorageMatrix[q, i, j] == 0)
-                        {
-                            check = false;
-                        }
-                        if (check == true && j == gens)
-                        {
-                            solution.DistributedFiles.Add(i);
-                        }
+                        check = false;
+                    }
+                    if (check == true && j == gens - 1)
+                    {
+                        solution.DistributedFiles.Add(iter);
                     }
                 }
+
+                iter++;
             }
 
             // Перебор файлов в хранилище для подсчёта суммарного объёма
@@ -119,6 +121,13 @@ namespace Diploma_Master.Methods
             }
 
             return solution;
+        }
+
+        public static int[,,] StorageMatrixToArray(StorageObject storage, SolutionObject solution, int gens)
+        {
+            var result = new int[storage.HiveCount, storage.FileCount, gens];
+
+            return result;
         }
     }
 }

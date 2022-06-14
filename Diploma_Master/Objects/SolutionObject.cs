@@ -8,7 +8,7 @@ namespace Diploma_Master.Objects
     /// </summary>
     public class SolutionObject
     {
-        public int[,,] FileStorageMatrix { get; set; }
+        public List<int[]> FileStorageMatrix { get; set; }
 
         public List<int> DistributedFiles { get; set; }
 
