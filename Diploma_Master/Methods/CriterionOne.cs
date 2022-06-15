@@ -25,7 +25,7 @@ namespace Diploma_Master.Methods
                 {
                     if (solution.DistributedFiles.Contains(j.fileNumber))
                     {
-                        for (int i = 0; i < j.fileFragmentsSize.Length; i++)
+                        for (int i = 0; i < j.fileFragmentsSize.Count; i++)
                         {
                             filesSize += i * StorageMatrix.StorageMatrixToArray(storage, solution, gens)[h, j.fileNumber, i];
                         }

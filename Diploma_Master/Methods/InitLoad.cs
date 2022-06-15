@@ -26,19 +26,15 @@ namespace Diploma_Master.Methods
                 NodeCount = 50
             };
 
-            int sizeAll = 0;
-
-            storage.NodesSize = new int[storage.NodeCount];
+            storage.NodesSize = new List<int>();
             for (int j = 1; j < storage.NodeCount; j++)
             {
                 // Генерируем объём текущего узла в Мб
-                //storage.NodesSize[j] = rnd.Next(4048, 10240);
-                storage.NodesSize[j] = 4048;
-                // Суммируем объёмы узлов
-                sizeAll += storage.NodesSize[j];
+                //storage.NodesSize.Add(rnd.Next(4048, 10240));
+                storage.NodesSize.Add(4048);
             }
 
-            storage.StorageSize = sizeAll;
+            storage.StorageSize = storage.NodesSize.Sum();
 
             // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
             //storage.FileCount = rnd.Next(25, 30)*2;
@@ -87,11 +83,11 @@ namespace Diploma_Master.Methods
                 // Генерируем размер фрагментов h-ого файла
                 int fragmentSize = fileSize / gens;
                 // Создаём пустой массив фрагментов h-ого файла
-                var fileFragmentsSize = new int[gens];
+                var fileFragmentsSize = new List<int>();
                 for (int j = 0; j < gens; j++)
                 {
                     // Генерируем массив размеров фрагментов h-ого файла
-                    fileFragmentsSize[j] = fragmentSize;
+                    fileFragmentsSize.Add(fragmentSize);
                 }
 
                 // Заполняем список файлов в переменной
@@ -99,6 +95,7 @@ namespace Diploma_Master.Methods
                 {
                     fileNumber = h,
                     fileSize = fileSize,
+                    fileFragmentsCount = gens,
                     fileFragmentsSize = fileFragmentsSize
                 });
 

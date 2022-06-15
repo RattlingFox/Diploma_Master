@@ -12,7 +12,7 @@ namespace Diploma_Master
 
         public int NodeCount { get; set; }
 
-        public int[] NodesSize { get; set; }
+        public List<int> NodesSize { get; set; }
 
         public int StorageSize { get; set; }
 

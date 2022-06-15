@@ -24,8 +24,7 @@ namespace Diploma_Master.Methods
         {
             var populationNew = new List<PopulationObject>();
             var tempPopulation = new List<PopulationObject>();
-            int[,,] tempStorageMatrix = new int[storage.NodeCount, storage.FileCount, gens];
-            int iterOne = 0;
+            int[,,] tempStorageMatrix = new int[storage.NodeCount, storage.FileCount, gens];            
             int iterTwo = 0;
             int iterThree = 0;
             var alpha = new List<List<int[]>>();
@@ -37,30 +36,26 @@ namespace Diploma_Master.Methods
             {
                 foreach (PopulationObject j in tempPopulation)
                 {
-                    var beta = new List<int[]>();
-
                     if (i != j)
                     {
+                        int iterOne = 0;
+
                         foreach (var g in i.Solution.FileStorageMatrix)
                         {
-                            if (iterOne < storage.FileCount / 2)
+                            if (iterOne++ < storage.FileCount / 2)
                             {
-                                beta.Add(g);
+                                populationNew[iterTwo].Solution.FileStorageMatrix[iterOne] = i.Solution.FileStorageMatrix[iterOne];
                             }
-                            else
+
+                            if (iterOne++ >= storage.FileCount / 2)
                             {
-                                beta.Add(j.Solution.FileStorageMatrix[iterTwo++]);
+                                populationNew[iterTwo].Solution.FileStorageMatrix[iterOne] = j.Solution.FileStorageMatrix[iterOne];
                             }
                         }
                     }
 
-                    alpha.Add(beta);
+                    iterTwo++;
                 }
-            }
-
-            foreach (PopulationObject i in populationNew)
-            {
-                i.Solution.FileStorageMatrix = alpha[iterOne++];
             }
 
             foreach (PopulationObject i in populationNew)
@@ -68,21 +63,24 @@ namespace Diploma_Master.Methods
                 int q1 = rnd.Next(0, storage.FileCount);
                 int q2 = rnd.Next(0, storage.FileCount);
                 int q3 = rnd.Next(0, storage.FileCount);
-                int iter = 0;
 
                 foreach (var j in i.Solution.FileStorageMatrix)
                 {
-                    if (iter == q1 || iter == q2 || iter == q3)
+                    if (j == i.Solution.FileStorageMatrix[q1] || j == i.Solution.FileStorageMatrix[q2] || j == i.Solution.FileStorageMatrix[q3])
                     {
-                        int p = rnd.Next(0, storage.NodeCount);
                         int h = rnd.Next(0, gens);
                         int t = rnd.Next(0, 1);
                         if (t == 0) { t = -1; }
 
-                        j[p] += t;
+                        j[h] += t;
                     }
-                    iter++;
                 }
+            }
+
+            foreach (PopulationObject i in populationNew)
+            {
+                i.Solution = StorageMatrix.RecalcDistributedFiles(gens, i.Solution);
+                i.Solution = StorageMatrix.RecalcFileSizeSum(storage, i.Solution);
             }
 
             foreach (PopulationObject i in populationNew)

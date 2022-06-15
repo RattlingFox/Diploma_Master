@@ -28,7 +28,7 @@ namespace Diploma_Master.Methods
                     {
                         for (int q = 0; q < storage.NodeCount; q++)
                         {
-                            for (int i = 0; i < file.fileFragmentsSize.Length; i++)
+                            for (int i = 0; i < file.fileFragmentsSize.Count; i++)
                             {
                                 if (1 == StorageMatrix.StorageMatrixToArray(storage, solution, gens)[q, file.fileNumber, i])
                                 {
