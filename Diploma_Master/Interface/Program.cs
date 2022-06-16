@@ -34,6 +34,7 @@ namespace Diploma_Master.System
             Console.WriteLine();
             UI.BestObjectiveFunctionValues();
 
+            Console.WriteLine();
             Console.WriteLine("Для выхода из программы нажмите любую клавишу");
             Console.ReadLine();
         }

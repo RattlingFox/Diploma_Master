@@ -18,8 +18,6 @@ namespace Diploma_Master
 
         public int FileCount { get; set; }
 
-        //public List<Files> Files { get; set; }
-
         public float[,] DistanceMatrix { get; set; }
 
         public int[,] FilesUsingMatrix { get; set; }

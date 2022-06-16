@@ -36,6 +36,7 @@ namespace Diploma_Master.Methods
             // Перебор файлов в хранилище для подсчёта суммарного объёма
             RecalcFileSizeSum(storage, solution);
 
+            
             return solution;
         }
 
@@ -70,12 +71,14 @@ namespace Diploma_Master.Methods
                     //solution.Files[h].fileFragmentsSize.Add(solution.Files[h].fileSize / gens);
                     solution.Files[h].fileFragmentsSize.Add(256);
 
-                    if (solution.Files.Any(x => x.fileFragmentsStorage.Where(y => y == rndNum).Count() >= 5))
+                    if (solution.Files.Any(x => x.fileFragmentsStorage.Where(y => y == rndNum).Count() >= 5) || rndNum == 0)
                     {
                         rndNum = 0;
                     }
 
                     solution.Files[h].fileFragmentsStorage.Add(rndNum);
+
+                    
                 }
             }
 
@@ -110,7 +113,7 @@ namespace Diploma_Master.Methods
                         solution.DistributedFiles.Add(j);
                     }
                     alpha++;
-                }
+                }                
             }
 
             return solution;

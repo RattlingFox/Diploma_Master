@@ -93,25 +93,38 @@ namespace Diploma_Master.System
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+            Console.WriteLine("0% complete");
+            int epoch = 100;
 
             if (childPopulation.Count != 0)
             {
                 parentPopulation = childPopulation;
             }
 
-            for (; epochCounter < 100; epochCounter++)
+            for (; epochCounter < epoch; epochCounter++)
             {
-                for (int i = 0; i < 5; i++)
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.WriteLine($"{epochCounter}% complete");
+
+                childPopulation = GA.GAStep(storage, parentPopulation, gens);
+
+                if (childPopulation.Count <= 1 && epochCounter < epoch)
                 {
-                    if (childPopulation.Count <= 1)
+                    for (int i = 0; i < 5; i++) 
                     {
                         childPopulation = GA.GAStep(storage, parentPopulation, gens);
+                        if (childPopulation.Count >= 10) break;
                     }
                 }
-
+                else if (epochCounter < epoch - 1)
+                {
+                    parentPopulation = childPopulation;
+                }                             
             }
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.WriteLine("100% complete");
 
-            if (epochCounter == 1000)
+            if (epochCounter == epoch)
             {
                 Console.WriteLine($"Достигнута {epochCounter}-ая эпоха");
             }

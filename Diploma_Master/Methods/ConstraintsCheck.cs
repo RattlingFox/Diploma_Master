@@ -1,5 +1,7 @@
 ﻿using Diploma_Master.Objects;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Diploma_Master.Methods
 {
@@ -16,10 +18,9 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static bool CheckSolution(StorageObject storage, SolutionObject solution, int gens)
         {
-            int[] alpha = DistributedFilesSize(storage, solution, gens);
+            List<int> alpha = DistributedFilesSize(storage, solution, gens);
 
-            for (
-                int i = 1; i < storage.NodeCount; i++)
+            for (int i = 1; i < storage.NodeCount; i++)
             {
                 if (storage.NodesSize[i] < alpha[i])
                 {
@@ -38,9 +39,15 @@ namespace Diploma_Master.Methods
         /// <param name="solution"> Экземпляр "Решение" </param>
         /// <param name="gens"> Количество частей каждого файла </param>
         /// <returns></returns>
-        public static int[] DistributedFilesSize(StorageObject storage, SolutionObject solution, int gens)
+        public static List<int> DistributedFilesSize(StorageObject storage, SolutionObject solution, int gens)
         {
-            var tempResult = new int[storage.NodeCount];
+            var tempResult = new List<int>();
+            for (int i = 0; i < storage.NodeCount; i++)
+            {
+                tempResult.Add(0);
+            }
+
+            int a = 0;
 
             foreach (var j in solution.DistributedFiles)
             {
@@ -48,30 +55,22 @@ namespace Diploma_Master.Methods
                 {
                     for (int q = 0; q < storage.NodeCount; q++)
                     {
-                        foreach (var p in solution.Files)
+                        if (solution.Files[j.fileNumber].fileFragmentsStorage[i] == q)
                         {
-                            if (solution.Files[p.fileNumber].fileFragmentsStorage[i] == q)
+                            int? alpha = 0;
+
+                            alpha = j?.fileFragmentsSize[i];
+
+                            if (alpha == null)
                             {
-                                int? alpha = 0;
-
-                                try
-                                {
-                                    alpha = j?.fileFragmentsSize[i];
-                                }
-                                catch (Exception)
-                                {
-                                    tempResult[q] += 0;
-                                }
-                                finally
-                                {
-                                    if (alpha.HasValue)
-                                    {
-                                        tempResult[q] += (int)alpha.GetValueOrDefault(0);
-                                    }
-                                }
-
-                                break;
+                                tempResult[q] += 0;
                             }
+
+                            tempResult[q] += alpha ?? 0;
+
+                            a += alpha ?? 0;
+
+                            break;
                         }
                     }
                 }

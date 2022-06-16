@@ -23,12 +23,12 @@ namespace Diploma_Master.Methods
 
                 // Задаём количество узлов в хранилище
                 //NodeCount = rnd.Next(20, 100)
-                NodeCount = 50
+                NodeCount = 10
             };
 
             // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
-            //storage.FileCount = rnd.Next(25, 30)*2;
-            storage.FileCount = 20;
+            //storage.FileCount = rnd.Next(25, 250)*2;
+            storage.FileCount = 30;
 
             storage.NodesSize = new List<int>();
 

@@ -24,50 +24,44 @@ namespace Diploma_Master.Methods
         {
             var rnd = new Random();
             var populationNew = new List<PopulationObject>();
-            var tempPopulation = new List<PopulationObject>();
+            var tempPopulation = populationOld.OrderBy(x => x.ObjectiveFunctionValue).Take(10);
             int iterThree = 0;
 
-            tempPopulation.AddRange(populationOld.OrderBy(x => x.ObjectiveFunctionValue).Take(10));
-
-            foreach (PopulationObject i in tempPopulation)
+            foreach (var i in tempPopulation)
             {
-                int iterTwo = 0;
 
-                foreach (PopulationObject j in tempPopulation)
+                foreach (var j in tempPopulation)
                 {
                     if (i != j)
                     {
+                        int iterTwo = 0;
                         var rndNew = rnd.Next(1, storage.FileCount - 1);
                         int iterOne = 0;
-                        var alpha = new PopulationObject() { Solution = new SolutionObject() };
-                        populationNew.Add(alpha);
-                        alpha.Solution.Files.Add(new Files());
+                        var alpha = new PopulationObject() { Solution = new SolutionObject() };                       
 
                         for (var g = 0; g < storage.FileCount; g++)
                         {
                             if (iterOne < rndNew)
-                            {
-                                alpha.Solution.Files[iterOne]
-                                    .fileFragmentsStorage.Add(
-                                    i.Solution.Files[iterTwo]
-                                    .fileFragmentsStorage[iterOne]
-                                    );
+                            {                                
+                                alpha.Solution.Files.Add(
+                                    i.Solution.Files[iterTwo]);
                             }
 
                             if (iterOne >= rndNew)
                             {
-                                alpha.Solution.Files[iterOne].fileFragmentsStorage.Add(j.Solution.Files[iterTwo].fileFragmentsStorage[iterOne]);
+                                alpha.Solution.Files.Add(j.Solution.Files[iterTwo]);
                             }
+
+                            iterTwo++;
                         }
 
+                        populationNew.Add(alpha);
                         iterOne++;
-                    }
-
-                    iterTwo++;
+                    }                    
                 }
             }
 
-            foreach (PopulationObject i in populationNew)
+            foreach (var i in populationNew)
             {
                 int q1 = rnd.Next(0, storage.FileCount);
                 int q2 = rnd.Next(0, storage.FileCount);
@@ -84,29 +78,19 @@ namespace Diploma_Master.Methods
                         j.fileFragmentsStorage[h] += t;
                     }
                 }
-            }
 
-            foreach (PopulationObject i in populationNew)
-            {
                 i.Solution = StorageMatrix.RecalcDistributedFiles(gens, i.Solution);
                 i.Solution = StorageMatrix.RecalcFileSizeSum(storage, i.Solution);
-            }
-
-            foreach (PopulationObject i in populationNew)
-            {
                 i.GenerationNumber = populationOld[0].GenerationNumber + 1;
                 i.IndividualNumber = iterThree++;
                 i.ObjectiveFunctionValue = CriterionOne.CriterionOneCalc(storage, i.Solution, gens) + CriterionTwo.CriterionTwoCalc(storage, i.Solution, gens) +
                     CriterionThree.CriterionThreeCalc(i.Solution);
                 i.ConstraintCheckResult = ConstraintsCheck.CheckSolution(storage, i.Solution, gens);
-
-                if (i.ConstraintCheckResult == false)
-                {
-                    populationNew.Remove(i);
-                }
             }
 
-            return populationNew;
+
+
+            return populationNew.Where(x => x.ConstraintCheckResult != false).ToList();
         }
 
         /// <summary>
@@ -120,11 +104,13 @@ namespace Diploma_Master.Methods
         public static List<PopulationObject> InitPopulation(StorageObject storage, int gens)
         {
             var population = new List<PopulationObject>();
+            Console.WriteLine("0% complete");
 
             for (int i = 0; i < 10;)
-            {
+            {                
                 var solution = StorageMatrix.InitStorageMatrix(storage, gens);
                 var check = ConstraintsCheck.CheckSolution(storage, solution, gens);
+
                 if (check == true)
                 {
                     float result = CriterionOne.CriterionOneCalc(storage, solution, gens) +
@@ -140,6 +126,8 @@ namespace Diploma_Master.Methods
                     });
 
                     i++;
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.WriteLine($"{i * 10}% complete");
                 }
             }
 
