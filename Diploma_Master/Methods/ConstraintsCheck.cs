@@ -20,7 +20,8 @@ namespace Diploma_Master.Methods
         {
             int[] alpha = DistributedFilesSize(storage, solution, gens);
 
-            for (int i = 1; i < storage.NodeCount; i++)
+            for (
+                int i = 1; i < storage.NodeCount; i++)
             {
                 if (storage.NodesSize[i] < alpha[i])
                 {
@@ -57,7 +58,7 @@ namespace Diploma_Master.Methods
                                 
                                 try
                                 {
-                                    alpha = solution.Files[j]?.fileFragmentsSize[i];
+                                    alpha = j?.fileFragmentsSize[i];
                                 }
                                 catch (Exception)
                                 {

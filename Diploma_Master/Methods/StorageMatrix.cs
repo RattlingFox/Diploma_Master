@@ -25,7 +25,7 @@ namespace Diploma_Master.Methods
             var solution = new SolutionObject()
             {
                 Files = new List<Files>(),
-                DistributedFiles = new List<int>(),
+                DistributedFiles = new List<Files>(),
                 FileSizeSum = 0
             };
 
@@ -72,7 +72,7 @@ namespace Diploma_Master.Methods
                     //solution.Files[h].fileFragmentsSize.Add(solution.Files[h].fileSize / gens);
                     solution.Files[h].fileFragmentsSize.Add(256);
 
-                    while (solution.Files.Any(x => x.fileFragmentsStorage.Where(y => y == rndNum).Count() >= 5))
+                    if (solution.Files.Any(x => x.fileFragmentsStorage.Where(y => y == rndNum).Count() >= 5))
                     {
                         rndNum = 0;
                     }
@@ -94,9 +94,8 @@ namespace Diploma_Master.Methods
     /// <returns></returns>
     public static SolutionObject RecalcDistributedFiles(int gens, SolutionObject solution)
         {
-            solution.DistributedFiles = new List<int>();
+            solution.DistributedFiles = new List<Files>();
 
-            int iter = 0;
             foreach (var j in solution.Files)
             {
                 int alpha = 0;
@@ -110,12 +109,10 @@ namespace Diploma_Master.Methods
                     }
                     if (check == true && alpha == gens - 1)
                     {
-                        solution.DistributedFiles.Add(iter);
+                        solution.DistributedFiles.Add(j);
                     }
                     alpha++;
                 }
-
-                iter++;
             }
 
             return solution;
@@ -135,7 +132,7 @@ namespace Diploma_Master.Methods
             // Перебор файлов в хранилище для подсчёта суммарного объёма
             foreach (Files j in solution.Files)
             {
-                if (solution.DistributedFiles.Contains(j.fileNumber))
+                if (solution.DistributedFiles.Contains(j))
                 {
                     solution.FileSizeSum += j.fileSize;
                 };

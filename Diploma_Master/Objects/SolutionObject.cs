@@ -10,7 +10,7 @@ namespace Diploma_Master.Objects
     {
         public List<Files> Files { get; set; } = new List<Files>();
 
-        public List<int> DistributedFiles { get; set; } = new List<int>();
+        public List<Files> DistributedFiles { get; set; } = new List<Files>();
 
         public int FileSizeSum { get; set; }
     }

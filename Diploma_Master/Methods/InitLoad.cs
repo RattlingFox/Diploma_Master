@@ -32,6 +32,7 @@ namespace Diploma_Master.Methods
 
             storage.NodesSize = new List<int>();
 
+            // Заполнение "нулевого" узла, т.е. пространство для нераспределённых файлов
             storage.NodesSize.Add(storage.FileCount*4048);
 
             for (int j = 1; j < storage.NodeCount; j++)

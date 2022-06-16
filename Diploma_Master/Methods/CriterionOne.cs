@@ -23,7 +23,7 @@ namespace Diploma_Master.Methods
                 int filesSize = 0;
                 foreach (var j in solution.Files)
                 {
-                    if (solution.DistributedFiles.Contains(j.fileNumber))
+                    if (solution.DistributedFiles.Contains(j))
                     {
                         for (int i = 0; i < j.fileFragmentsSize.Count; i++)
                         {
