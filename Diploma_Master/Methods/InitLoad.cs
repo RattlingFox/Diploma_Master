@@ -26,7 +26,14 @@ namespace Diploma_Master.Methods
                 NodeCount = 50
             };
 
+            // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
+            //storage.FileCount = rnd.Next(25, 30)*2;
+            storage.FileCount = 100;
+
             storage.NodesSize = new List<int>();
+
+            storage.NodesSize.Add(storage.FileCount*4048);
+
             for (int j = 1; j < storage.NodeCount; j++)
             {
                 // Генерируем объём текущего узла в Мб
@@ -34,11 +41,9 @@ namespace Diploma_Master.Methods
                 storage.NodesSize.Add(4048);
             }
 
-            storage.StorageSize = storage.NodesSize.Sum();
+            storage.StorageSize = storage.NodesSize.Sum() - storage.NodesSize[0];
 
-            // Заполняем параметр количество файлов, распределяемых по узлам, умножаем на 2 для получения чётного
-            //storage.FileCount = rnd.Next(25, 30)*2;
-            storage.FileCount = 100;
+            
 
             storage.DistanceMatrix = new float[storage.NodeCount, storage.NodeCount];
             for (int i = 1; i < storage.NodeCount; i++)

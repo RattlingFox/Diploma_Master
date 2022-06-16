@@ -21,7 +21,6 @@ namespace Diploma_Master.Methods
         public static SolutionObject InitStorageMatrix(StorageObject storage, int gens)
         {
             var rnd = new Random();
-            int[] checkSize = new int[storage.NodeCount];
 
             var solution = new SolutionObject()
             {
@@ -33,17 +32,18 @@ namespace Diploma_Master.Methods
             // Заполнение начального решения с ограничением до 5 фрагментов на 1 узел хранилища
             foreach (var j in storage.Files)
             {
+                solution.FileStorageMatrix.Add(new List<int>());
+
                for (int i = 0; i < gens; i++)
                 {
-                    solution.FileStorageMatrix.Add(new List<int>());
-                    var rndNum = rnd.Next(0, storage.NodeCount-1);               
+                    var rndNum = rnd.Next(0, storage.NodeCount - 1);               
 
                     while (solution.FileStorageMatrix.Any(x => x.Where(y => y == rndNum).Count() >= 5))
                     {
                         rndNum = 0;
                     }
 
-                    solution.FileStorageMatrix[j.fileNumber][i] = rndNum;
+                    solution.FileStorageMatrix[j.fileNumber].Add(rndNum);
                 }                
             }
 
