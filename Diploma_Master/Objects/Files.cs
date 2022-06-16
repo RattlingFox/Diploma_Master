@@ -11,7 +11,7 @@ namespace Diploma_Master
 
         public int fileSize { get; set; }
 
-        public int fileFragmentsCount   { get; set; }
+        public int fileFragmentsCount { get; set; }
 
         public List<int> fileFragmentsSize { get; set; } = new List<int>();
 

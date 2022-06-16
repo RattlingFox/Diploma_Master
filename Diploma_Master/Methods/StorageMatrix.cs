@@ -20,8 +20,6 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static SolutionObject InitStorageMatrix(StorageObject storage, int gens)
         {
-            var rnd = new Random();
-
             var solution = new SolutionObject()
             {
                 Files = new List<Files>(),
@@ -55,10 +53,11 @@ namespace Diploma_Master.Methods
 
             for (int h = 0; h < storage.FileCount; h++)
             {
+
                 solution.Files.Add(new Files());
 
                 solution.Files[h].fileNumber = h;
-                //alpha.fileSize = rnd.Next(1, 128) * gens;
+                //solution.fileSize = rnd.Next(1, 128) * gens;
                 solution.Files[h].fileSize = 256 * gens;
                 solution.Files[h].fileFragmentsCount = gens;
                 solution.Files[h].fileFragmentsSize = new List<int>();
@@ -66,7 +65,6 @@ namespace Diploma_Master.Methods
 
                 for (int i = 0; i < gens; i++)
                 {
-
                     var rndNum = rnd.Next(0, storage.NodeCount - 1);
 
                     //solution.Files[h].fileFragmentsSize.Add(solution.Files[h].fileSize / gens);
@@ -78,21 +76,21 @@ namespace Diploma_Master.Methods
                     }
 
                     solution.Files[h].fileFragmentsStorage.Add(rndNum);
-                }                
-            }          
+                }
+            }
 
             return solution;
         }
 
-    /// <summary>
-    /// Метод для пересчёта параметров нового решения. Пересчитывает список полностью распределённых файлов по узлам.
-    /// На вход метод запрашивает количество частеЙ, на который делиться каждый файл и экземпляр "решения" для пересчёта с новой матрицей хранения.
-    /// На выходе метод отдаёт экземпляр "Решения" с новыми значениями параметров.
-    /// </summary>
-    /// <param name="solution"> Экземпляр "Решение" </param>
-    /// <param name="gens"> Количество частей, на которые делится каждый файл </param>
-    /// <returns></returns>
-    public static SolutionObject RecalcDistributedFiles(int gens, SolutionObject solution)
+        /// <summary>
+        /// Метод для пересчёта параметров нового решения. Пересчитывает список полностью распределённых файлов по узлам.
+        /// На вход метод запрашивает количество частеЙ, на который делиться каждый файл и экземпляр "решения" для пересчёта с новой матрицей хранения.
+        /// На выходе метод отдаёт экземпляр "Решения" с новыми значениями параметров.
+        /// </summary>
+        /// <param name="solution"> Экземпляр "Решение" </param>
+        /// <param name="gens"> Количество частей, на которые делится каждый файл </param>
+        /// <returns></returns>
+        public static SolutionObject RecalcDistributedFiles(int gens, SolutionObject solution)
         {
             solution.DistributedFiles = new List<Files>();
 
@@ -141,7 +139,7 @@ namespace Diploma_Master.Methods
             }
 
             return solution;
-        }        
+        }
 
         /// <summary>
         /// Метод для получения матрицы хранения вида int[q,j,i] для расчёта критериев К1 и К2.

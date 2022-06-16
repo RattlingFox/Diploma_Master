@@ -33,7 +33,7 @@ namespace Diploma_Master.Methods
             storage.NodesSize = new List<int>();
 
             // Заполнение "нулевого" узла, т.е. пространство для нераспределённых файлов
-            storage.NodesSize.Add(storage.FileCount*4048);
+            storage.NodesSize.Add(storage.FileCount * 4048);
 
             for (int j = 1; j < storage.NodeCount; j++)
             {
@@ -44,7 +44,7 @@ namespace Diploma_Master.Methods
 
             storage.StorageSize = storage.NodesSize.Sum() - storage.NodesSize[0];
 
-            
+
 
             storage.DistanceMatrix = new float[storage.NodeCount, storage.NodeCount];
             for (int i = 1; i < storage.NodeCount; i++)
@@ -65,7 +65,7 @@ namespace Diploma_Master.Methods
             }
 
             return storage;
-        }        
+        }
 
         /// <summary>
         /// Иницилизация матрицы использования файлов узлами хранилища.

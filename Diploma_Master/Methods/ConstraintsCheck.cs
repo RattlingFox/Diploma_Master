@@ -1,7 +1,5 @@
 ﻿using Diploma_Master.Objects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Diploma_Master.Methods
 {
@@ -55,7 +53,7 @@ namespace Diploma_Master.Methods
                             if (solution.Files[p.fileNumber].fileFragmentsStorage[i] == q)
                             {
                                 int? alpha = 0;
-                                
+
                                 try
                                 {
                                     alpha = j?.fileFragmentsSize[i];
@@ -71,7 +69,7 @@ namespace Diploma_Master.Methods
                                         tempResult[q] += (int)alpha.GetValueOrDefault(0);
                                     }
                                 }
-                                
+
                                 break;
                             }
                         }

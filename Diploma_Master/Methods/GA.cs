@@ -37,7 +37,7 @@ namespace Diploma_Master.Methods
                 {
                     if (i != j)
                     {
-                        var rndNew = rnd.Next(1, storage.FileCount-1);
+                        var rndNew = rnd.Next(1, storage.FileCount - 1);
                         int iterOne = 0;
                         var alpha = new PopulationObject() { Solution = new SolutionObject() };
                         populationNew.Add(alpha);
@@ -57,7 +57,7 @@ namespace Diploma_Master.Methods
                             if (iterOne >= rndNew)
                             {
                                 alpha.Solution.Files[iterOne].fileFragmentsStorage.Add(j.Solution.Files[iterTwo].fileFragmentsStorage[iterOne]);
-                            }                            
+                            }
                         }
 
                         iterOne++;
