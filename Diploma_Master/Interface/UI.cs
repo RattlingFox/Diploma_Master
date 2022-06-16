@@ -96,6 +96,7 @@ namespace Diploma_Master.System
             Console.WriteLine("0% complete");
             int epoch = 100;
 
+            // Заполнение переменных при вызове метода
             if (childPopulation.Count != 0)
             {
                 parentPopulation = childPopulation;
@@ -106,8 +107,20 @@ namespace Diploma_Master.System
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
                 Console.WriteLine($"{epochCounter}% complete");
 
+                // Запуск алгоритма
                 childPopulation = GA.GAStep(storage, parentPopulation, gens);
 
+                // Дополнительная проверка на существование новых оптимальных решений
+                if (childPopulation.Min(x => x.ObjectiveFunctionValue) > parentPopulation.Min(y => y.ObjectiveFunctionValue))
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        childPopulation = GA.GAStep(storage, parentPopulation, gens);
+                        if (childPopulation.Min(x => x.ObjectiveFunctionValue) < parentPopulation.Min(y => y.ObjectiveFunctionValue)) break;
+                    }
+                }
+
+                // Дополниельная проверка на слычай преждевременной сходимости алгоритма
                 if (childPopulation.Count <= 1 && epochCounter < epoch)
                 {
                     for (int i = 0; i < 5; i++) 
@@ -115,10 +128,6 @@ namespace Diploma_Master.System
                         childPopulation = GA.GAStep(storage, parentPopulation, gens);
                         if (childPopulation.Count >= 10) break;
                     }
-                }
-                else if (epochCounter < epoch - 1)
-                {
-                    parentPopulation = childPopulation;
                 }                             
             }
             Console.SetCursorPosition(0, Console.CursorTop - 1);
