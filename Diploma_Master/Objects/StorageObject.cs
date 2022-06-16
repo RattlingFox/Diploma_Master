@@ -12,13 +12,13 @@ namespace Diploma_Master
 
         public int NodeCount { get; set; }
 
-        public List<int> NodesSize { get; set; }
+        public List<int> NodesSize { get; set; } = new List<int>();
 
         public int StorageSize { get; set; }
 
         public int FileCount { get; set; }
 
-        public List<Files> Files { get; set; }
+        //public List<Files> Files { get; set; }
 
         public float[,] DistanceMatrix { get; set; }
 

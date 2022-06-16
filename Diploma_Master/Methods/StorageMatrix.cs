@@ -24,28 +24,13 @@ namespace Diploma_Master.Methods
 
             var solution = new SolutionObject()
             {
-                FileStorageMatrix = new List<List<int>>(),
+                Files = new List<Files>(),
                 DistributedFiles = new List<int>(),
                 FileSizeSum = 0
             };
 
-            // Заполнение начального решения с ограничением до 5 фрагментов на 1 узел хранилища
-            foreach (var j in storage.Files)
-            {
-                solution.FileStorageMatrix.Add(new List<int>());
-
-               for (int i = 0; i < gens; i++)
-                {
-                    var rndNum = rnd.Next(0, storage.NodeCount - 1);               
-
-                    while (solution.FileStorageMatrix.Any(x => x.Where(y => y == rndNum).Count() >= 5))
-                    {
-                        rndNum = 0;
-                    }
-
-                    solution.FileStorageMatrix[j.fileNumber].Add(rndNum);
-                }                
-            }
+            // Инициализация объектов "Файл" в объекте "Хранилище"
+            solution = InitFiles(storage, solution, gens);
 
             // Перебор файлов в хранилище для формировани списка полностью распределённых файлов
             RecalcDistributedFiles(gens, solution);
@@ -57,22 +42,65 @@ namespace Diploma_Master.Methods
         }
 
         /// <summary>
-        /// Метод для пересчёта параметров нового решения. Пересчитывает список полностью распределённых файлов по узлам.
-        /// На вход метод запрашивает количество частеЙ, на который делиться каждый файл и экземпляр "решения" для пересчёта с новой матрицей хранения.
-        /// На выходе метод отдаёт экземпляр "Решения" с новыми значениями параметров.
+        /// Инициализация объектов "Файл" в объекте "Хранилище".
+        /// На вход запрашиваем инициализированный экземпляр "Хранилище" и количество фрагментов, на которое делим каждый файл.
+        /// На выходе получим дополненный экземпляр "Хранилище" с заполненным списком файлов, размеры файлов, размеры фрагментов файлов
         /// </summary>
-        /// <param name="solution"> Экземпляр "Решение" </param>
-        /// <param name="gens"> Количество частей, на которые делится каждый файл </param>
+        /// <param name="storage"> Инициализированное пустое хранилище </param>
+        /// <param name="gens"> Количество фрагментов, на которое делим каждый файл </param>
         /// <returns></returns>
-        public static SolutionObject RecalcDistributedFiles(int gens, SolutionObject solution)
+        public static SolutionObject InitFiles(StorageObject storage, SolutionObject solution, int gens)
         {
-            solution.DistributedFiles.Clear();
+            var rnd = new Random();
+
+            for (int h = 0; h < storage.FileCount; h++)
+            {
+                solution.Files.Add(new Files());
+
+                solution.Files[h].fileNumber = h;
+                //alpha.fileSize = rnd.Next(1, 128) * gens;
+                solution.Files[h].fileSize = 256 * gens;
+                solution.Files[h].fileFragmentsCount = gens;
+                solution.Files[h].fileFragmentsSize = new List<int>();
+                solution.Files[h].fileFragmentsStorage = new List<int>();
+
+                for (int i = 0; i < gens; i++)
+                {
+
+                    var rndNum = rnd.Next(0, storage.NodeCount - 1);
+
+                    //solution.Files[h].fileFragmentsSize.Add(solution.Files[h].fileSize / gens);
+                    solution.Files[h].fileFragmentsSize.Add(256);
+
+                    while (solution.Files.Any(x => x.fileFragmentsStorage.Where(y => y == rndNum).Count() >= 5))
+                    {
+                        rndNum = 0;
+                    }
+
+                    solution.Files[h].fileFragmentsStorage.Add(rndNum);
+                }                
+            }          
+
+            return solution;
+        }
+
+    /// <summary>
+    /// Метод для пересчёта параметров нового решения. Пересчитывает список полностью распределённых файлов по узлам.
+    /// На вход метод запрашивает количество частеЙ, на который делиться каждый файл и экземпляр "решения" для пересчёта с новой матрицей хранения.
+    /// На выходе метод отдаёт экземпляр "Решения" с новыми значениями параметров.
+    /// </summary>
+    /// <param name="solution"> Экземпляр "Решение" </param>
+    /// <param name="gens"> Количество частей, на которые делится каждый файл </param>
+    /// <returns></returns>
+    public static SolutionObject RecalcDistributedFiles(int gens, SolutionObject solution)
+        {
+            solution.DistributedFiles = new List<int>();
 
             int iter = 0;
-            foreach (var j in solution.FileStorageMatrix)
+            foreach (var j in solution.Files)
             {
                 int alpha = 0;
-                foreach (var i in j)
+                foreach (var i in j.fileFragmentsStorage)
                 {
                     var check = true;
                     if (i == 0)
@@ -102,14 +130,17 @@ namespace Diploma_Master.Methods
         /// <param name="solution"> Экземпляр "Решение" </param>
         /// <returns></returns>
         public static SolutionObject RecalcFileSizeSum(StorageObject storage, SolutionObject solution)
-        { 
+        {
+            var iter = 0;
             // Перебор файлов в хранилище для подсчёта суммарного объёма
-            foreach (Files j in storage.Files)
+            foreach (Files j in solution.Files)
             {
                 if (solution.DistributedFiles.Contains(j.fileNumber))
                 {
                     solution.FileSizeSum += j.fileSize;
                 };
+
+                iter++;
             }
 
             return solution;
@@ -126,21 +157,20 @@ namespace Diploma_Master.Methods
         public static int[,,] StorageMatrixToArray(StorageObject storage, SolutionObject solution, int gens)
         {
             var result = new int[storage.NodeCount, storage.FileCount, gens];
-            int iter = 0;
 
-            foreach (var j in solution.FileStorageMatrix)
+            foreach (var j in solution.Files)
             {
                 for (int q = 0; q < storage.NodeCount; q++)
                 {
-                    for (int i = 0; i < j.Count; i++)
+                    for (int i = 0; i < j.fileFragmentsCount; i++)
                     {
-                        if (j[i] == q)
+                        if (j.fileFragmentsStorage[i] == q)
                         {
-                            result[q, iter, i] = 1;
+                            result[q, j.fileNumber, i] = 1;
                         }
                         else
                         {
-                            result[q, iter, i] = 0;
+                            result[q, j.fileNumber, i] = 0;
                         }
                     }
                 }

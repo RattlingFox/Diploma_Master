@@ -7,14 +7,14 @@ namespace Diploma_Master
     /// </summary>
     public class Files
     {
-        public int fileNumber;
+        public int fileNumber { get; set; }
 
-        public int fileSize;
+        public int fileSize { get; set; }
 
-        public int fileFragmentsCount;
+        public int fileFragmentsCount   { get; set; }
 
-        public List<int> fileFragmentsSize;
+        public List<int> fileFragmentsSize { get; set; } = new List<int>();
 
-        public List<int> fileFragmentsStorage;
+        public List<int> fileFragmentsStorage { get; set; } = new List<int>();
     }
 }

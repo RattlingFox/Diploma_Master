@@ -24,7 +24,6 @@ namespace Diploma_Master.System
         {
             gens = gensIN;
             storage = InitLoad.InitStorage();
-            storage = InitLoad.InitFiles(storage, gens);
             storage = InitLoad.InitUsingMatrix(storage);
         }
 
@@ -73,12 +72,12 @@ namespace Diploma_Master.System
             Console.WriteLine($"Значение целевой функции = {ObjectiveFUnctionValue}");
             Console.WriteLine("");
 
-            foreach (var i in bestGeneration.Solution.FileStorageMatrix)
+            foreach (var j in bestGeneration.Solution.Files)
             {
                 Console.WriteLine("");
-                foreach (var q in i)
+                for (int i = 0; i < gens; i++)
                 {
-                    Console.Write($"{q}\t");
+                    Console.Write($"{j.fileFragmentsStorage[i]}\t");
                 }
             }
 
@@ -100,7 +99,7 @@ namespace Diploma_Master.System
                 parentPopulation = childPopulation;
             }
 
-            for (; epochCounter < 10; epochCounter++)
+            for (; epochCounter < 100; epochCounter++)
             {
                 for (int i = 0; i < 5; i++)
                 {

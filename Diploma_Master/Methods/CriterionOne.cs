@@ -21,7 +21,7 @@ namespace Diploma_Master.Methods
             for (int h = 0; h < storage.NodeCount; h++)
             {
                 int filesSize = 0;
-                foreach (Files j in storage.Files)
+                foreach (var j in solution.Files)
                 {
                     if (solution.DistributedFiles.Contains(j.fileNumber))
                     {

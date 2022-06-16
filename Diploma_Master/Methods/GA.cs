@@ -22,36 +22,45 @@ namespace Diploma_Master.Methods
         /// <returns></returns>
         public static List<PopulationObject> GAStep(StorageObject storage, List<PopulationObject> populationOld, int gens)
         {
+            var rnd = new Random();
             var populationNew = new List<PopulationObject>();
             var tempPopulation = new List<PopulationObject>();
-            int[,,] tempStorageMatrix = new int[storage.NodeCount, storage.FileCount, gens];            
-            int iterTwo = 0;
             int iterThree = 0;
-            var alpha = new List<List<int[]>>();
-
 
             tempPopulation.AddRange(populationOld.OrderBy(x => x.ObjectiveFunctionValue).Take(10));
 
             foreach (PopulationObject i in tempPopulation)
             {
+                int iterTwo = 0;
+
                 foreach (PopulationObject j in tempPopulation)
                 {
                     if (i != j)
                     {
+                        var rndNew = rnd.Next(1, storage.FileCount-1);
                         int iterOne = 0;
+                        var alpha = new PopulationObject() { Solution = new SolutionObject() };
+                        populationNew.Add(alpha);
+                        alpha.Solution.Files.Add(new Files());
 
-                        foreach (var g in i.Solution.FileStorageMatrix)
+                        for (var g = 0; g < storage.FileCount; g++)
                         {
-                            if (iterOne++ < storage.FileCount / 2)
+                            if (iterOne < rndNew)
                             {
-                                populationNew[iterTwo].Solution.FileStorageMatrix[iterOne] = i.Solution.FileStorageMatrix[iterOne];
+                                alpha.Solution.Files[iterOne]
+                                    .fileFragmentsStorage.Add(
+                                    i.Solution.Files[iterTwo]
+                                    .fileFragmentsStorage[iterOne]
+                                    );
                             }
 
-                            if (iterOne++ >= storage.FileCount / 2)
+                            if (iterOne >= rndNew)
                             {
-                                populationNew[iterTwo].Solution.FileStorageMatrix[iterOne] = j.Solution.FileStorageMatrix[iterOne];
-                            }
+                                alpha.Solution.Files[iterOne].fileFragmentsStorage.Add(j.Solution.Files[iterTwo].fileFragmentsStorage[iterOne]);
+                            }                            
                         }
+
+                        iterOne++;
                     }
 
                     iterTwo++;
@@ -64,15 +73,15 @@ namespace Diploma_Master.Methods
                 int q2 = rnd.Next(0, storage.FileCount);
                 int q3 = rnd.Next(0, storage.FileCount);
 
-                foreach (var j in i.Solution.FileStorageMatrix)
+                foreach (var j in i.Solution.Files)
                 {
-                    if (j == i.Solution.FileStorageMatrix[q1] || j == i.Solution.FileStorageMatrix[q2] || j == i.Solution.FileStorageMatrix[q3])
+                    if (j.fileNumber == q1 || j.fileNumber == q2 || j.fileNumber == q3)
                     {
                         int h = rnd.Next(0, gens);
                         int t = rnd.Next(0, 1);
                         if (t == 0) { t = -1; }
-
-                        j[h] += t;
+                        if (j.fileFragmentsStorage[h] == 0) { t = 1; }
+                        j.fileFragmentsStorage[h] += t;
                     }
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using Diploma_Master.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,6 +31,14 @@ namespace Diploma_Master.Methods
             return true;
         }
 
+        /// <summary>
+        /// Метод для подсчёта сколько места занимают фрагменты файлов на каждом узле
+        /// На вход запрашиваются инициализированные объекты "Хранилище" и "Решение", и количество фрагментов каждого файла
+        /// </summary>
+        /// <param name="storage"> Экземпляр "Хранилище" </param>
+        /// <param name="solution"> Экземпляр "Решение" </param>
+        /// <param name="gens"> Количество частей каждого файла </param>
+        /// <returns></returns>
         public static int[] DistributedFilesSize(StorageObject storage, SolutionObject solution, int gens)
         {
             var tempResult = new int[storage.NodeCount];
@@ -40,18 +49,30 @@ namespace Diploma_Master.Methods
                 {
                     for (int q = 0; q < storage.NodeCount; q++)
                     {
-                        if (solution.FileStorageMatrix[j][i] == q)
+                        foreach (var p in solution.Files)
                         {
-                            var alpha = storage.Files[j]?.fileFragmentsSize[i];
-                            if (alpha == null)
+                            if (solution.Files[p.fileNumber].fileFragmentsStorage[i] == q)
                             {
-                                tempResult[q] += 0;
+                                int? alpha = 0;
+                                
+                                try
+                                {
+                                    alpha = solution.Files[j]?.fileFragmentsSize[i];
+                                }
+                                catch (Exception)
+                                {
+                                    tempResult[q] += 0;
+                                }
+                                finally
+                                {
+                                    if (alpha.HasValue)
+                                    {
+                                        tempResult[q] += (int)alpha.GetValueOrDefault(0);
+                                    }
+                                }
+                                
+                                break;
                             }
-                            else
-                            {
-                                tempResult[q] += (int)alpha;
-                            }
-                            break;
                         }
                     }
                 }
